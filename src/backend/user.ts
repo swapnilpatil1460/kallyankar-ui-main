@@ -35,10 +35,7 @@ const postLogoutUser = async (token: string, email: string) => {
 };
 
 const postUserLogin = async (user: Login) => {
-  const { data } = await axios.post<UserLogin>(
-    "https://kallyankar-api-service.onrender.com/admin/login",
-    user
-  );
+  const { data } = await api.post<UserLogin>("admin/login", user);
   return data;
 };
 
