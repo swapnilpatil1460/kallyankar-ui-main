@@ -1,6 +1,6 @@
 import CustomerTable from "../../components/UI/Table/CustomerTable";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { customer } from "../../store/type";
 
 import useAppContext from "../../hooks/useAppContext";
@@ -12,6 +12,7 @@ const CustomerPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [val, setVal] = useState("");
+  const searchTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const {
     state: { refreshEffect },
     dispatch,
@@ -36,20 +37,21 @@ const CustomerPage = () => {
   ) => {
     const val = event.target.value;
     setVal(val);
-    setTimeout(() => {
-      if (!isNaN(+val)) {
-        if (val.length === 10) {
-          setSearchTerm(val);
-          setCurrentPage(1);
-        }
-      } else {
-        setSearchTerm(val);
-        setCurrentPage(1);
-      }
-    }, 2000);
+    if (searchTimer.current) clearTimeout(searchTimer.current);
+    searchTimer.current = setTimeout(() => {
+      setSearchTerm(val);
+      setCurrentPage(1);
+    }, 300);
   };
 
+  useEffect(() => {
+    return () => {
+      if (searchTimer.current) clearTimeout(searchTimer.current);
+    };
+  }, []);
+
   const handleResetInput = () => {
+    if (searchTimer.current) clearTimeout(searchTimer.current);
     setSearchTerm("");
     setVal("");
   };

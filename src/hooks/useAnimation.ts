@@ -1,9 +1,10 @@
 import { Severity } from "../store/type";
+import { useCallback } from "react";
 import useAppContext from "./useAppContext";
 
 const useAnimation = () => {
   const { dispatch } = useAppContext();
-  const snackbarAnimation = (message: string, severity: Severity) => {
+  const snackbarAnimation = useCallback((message: string, severity: Severity) => {
     dispatch({
       type: "TOGGLE_SNACKBAR",
       payload: {
@@ -12,20 +13,20 @@ const useAnimation = () => {
         severity,
       },
     });
-  };
-  const spinnerAnimationStart = () => {
+  }, [dispatch]);
+  const spinnerAnimationStart = useCallback(() => {
     dispatch({
       type: "SET_LOADING",
       payload: true,
     });
-  };
+  }, [dispatch]);
 
-  const spinnerAnimationStop = () => {
+  const spinnerAnimationStop = useCallback(() => {
     dispatch({
       type: "SET_LOADING",
       payload: false,
     });
-  };
+  }, [dispatch]);
   return {
     snackbarAnimation,
     spinnerAnimationStart,

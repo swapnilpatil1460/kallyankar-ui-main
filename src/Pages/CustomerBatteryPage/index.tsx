@@ -17,7 +17,7 @@ const CustomerBatteryPage = () => {
   const { refreshEffect, storedCartItems, isLoading } = state;
   const params = useMemo(() => {
     return { refreshEffect, id: customerId ?? "" };
-  }, [refreshEffect]);
+  }, [refreshEffect, customerId]);
 
   const { data } = useApiCall(getProductByCustomerId, params);
   const { dispatch } = useAppContext();
@@ -46,7 +46,7 @@ const CustomerBatteryPage = () => {
         dispatch({ type: "ADD_STORED_CART_ITEMS", payload: [] });
       }
     }
-  }, []);
+  }, [customerId, dispatch, storedCartItems]);
   const showNothing = !isLoading && data && data.length === 0;
   return (
     <>

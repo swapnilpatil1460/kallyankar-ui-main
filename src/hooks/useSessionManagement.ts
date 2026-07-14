@@ -15,36 +15,18 @@ const useSessionManagement = () => {
     dispatch({ type: "SET_SESSION_EXPIRATION", payload: 0 });
   }, [dispatch]);
 
-  const restoreUserSession = useCallback(() => {
-    const storedUser = localStorage.getItem("candidate");
-
-    if (storedUser) {
-      const user: User = JSON.parse(storedUser);
-      const sessionExpirationTime = new Date(user.expiration).getTime();
-      const currentTime = new Date().getTime();
-
-      if (sessionExpirationTime < currentTime) {
-        clearUserSession();
-      } else {
-        dispatch({ type: "SET_USER", payload: user });
-        dispatch({ type: "SET_IS_LOGGED_IN", payload: true });
-        dispatch({
-          type: "SET_SESSION_EXPIRATION",
-          payload: sessionExpirationTime,
-        });
-      }
-    }
-  }, [clearUserSession, dispatch]);
-
   const handleUserLogin = useCallback(
     (user: User) => {
       const sessionExpirationDate = new Date(
         new Date().getTime() + parseInt(user.expiration) * 1000
       );
-      user.expiration = sessionExpirationDate.toISOString();
-      localStorage.setItem("candidate", JSON.stringify(user));
+      const authenticatedUser = {
+        ...user,
+        expiration: sessionExpirationDate.toISOString(),
+      };
+      localStorage.setItem("candidate", JSON.stringify(authenticatedUser));
 
-      dispatch({ type: "SET_USER", payload: user });
+      dispatch({ type: "SET_USER", payload: authenticatedUser });
       dispatch({ type: "SET_IS_LOGGED_IN", payload: true });
       dispatch({
         type: "SET_SESSION_EXPIRATION",
@@ -68,10 +50,15 @@ const useSessionManagement = () => {
     spinnerAnimationStop(),
       snackbarAnimation("You have been logged out!", "success");
     clearUserSession();
-  }, [clearUserSession]);
+  }, [
+    clearUserSession,
+    snackbarAnimation,
+    spinnerAnimationStart,
+    spinnerAnimationStop,
+    state.user,
+  ]);
 
   return {
-    restoreUserSession,
     handleUserLogin,
     handleUserLogout,
   };

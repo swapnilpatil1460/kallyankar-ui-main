@@ -27,9 +27,10 @@ import SettingsPage from "../../Pages/Settings";
 
 const ProtectedRoute = ({ element }: { element: JSX.Element }) => {
   const {
-    state: { isAuthenticated },
+    state: { isAuthenticated, isSessionRestored },
   } = useAuthContext();
 
+  if (!isSessionRestored) return null;
   return isAuthenticated ? element : <Navigate to="/admin-login" replace />;
 };
 

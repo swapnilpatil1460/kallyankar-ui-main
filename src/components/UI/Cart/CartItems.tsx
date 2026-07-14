@@ -4,14 +4,13 @@ import Button from "@mui/material/Button";
 import { Dialog, Transition } from "@headlessui/react";
 import useAppContext from "../../../hooks/useAppContext";
 import PaymentStatus from "./PaymentStatus";
-import { Product } from "../../../store/type";
-import { postNewProduct } from "../../../backend/product";
-import { postNewBilling } from "../../../backend/billing";
+import { postCheckout } from "../../../backend/billing";
 import { getCustomerById } from "../../../backend/customer";
 import useApiCall from "../../../hooks/useApiCall";
 import InvoiceHeading from "./InvoiceHeading";
 import CartItemsList from "./CartItemList";
 import { usePdfDownloader } from "../../../hooks";
+import useAnimation from "../../../hooks/useAnimation";
 
 interface Props {
   open: boolean;
@@ -27,6 +26,8 @@ const CartItems: React.FC<Props> = ({ open, closeCartHandler, customerId }) => {
   const { handleDownloadPDF } = usePdfDownloader();
   const [payment, setTotalAmount] = useState({ total: 0, gst: 0 });
   const [inputFieldAmount, setInputAmount] = useState(payment.total.toString());
+  const [isSaving, setIsSaving] = useState(false);
+  const { snackbarAnimation } = useAnimation();
   const params = useMemo(() => ({ id: customerId }), [customerId]);
   const { data: customer } = useApiCall(getCustomerById, params);
 
@@ -39,23 +40,20 @@ const CartItems: React.FC<Props> = ({ open, closeCartHandler, customerId }) => {
   };
 
   const saveAsPDFHandler = async () => {
+    if (isSaving || storedCartItems.length === 0) return;
+    setIsSaving(true);
     try {
       let amount = inputFieldAmount
         ? payment.total - parseInt(inputFieldAmount)
         : 0;
       amount = billStatus === "Paid" ? 0 : amount;
 
-      await Promise.all(
-        storedCartItems.map((product) =>
-          postNewProduct({ ...product, customer: customerId } as Product)
-        )
-      );
-      await postNewBilling({
+      await postCheckout(storedCartItems, {
         gst_amount: payment.gst,
         total_amount: payment.total,
         unpaid_amount: amount,
         bill_status: billStatus,
-        customerId: customerId,
+        customerId,
       });
 
       handleDownloadPDF(
@@ -65,8 +63,15 @@ const CartItems: React.FC<Props> = ({ open, closeCartHandler, customerId }) => {
       dispatch({ type: "ADD_STORED_CART_ITEMS", payload: [] });
       dispatch({ type: "REFRESH_EFFECT", payload: !refreshEffect });
       closeCartHandler();
+      snackbarAnimation("Sale saved successfully", "success");
     } catch (err) {
       console.error("Error while saving record:", err);
+      snackbarAnimation(
+        "Sale could not be saved. Your cart has been kept so you can retry.",
+        "error"
+      );
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -163,6 +168,7 @@ const CartItems: React.FC<Props> = ({ open, closeCartHandler, customerId }) => {
                 <button
                   className="flex w-full items-center justify-center space-x-1 rounded-md border border-blue-500 py-2 text-sm text-blue-500 shadow-sm hover:bg-blue-500 hover:text-white"
                   onClick={saveAsPDFHandler}
+                  disabled={isSaving || storedCartItems.length === 0}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -178,7 +184,7 @@ const CartItems: React.FC<Props> = ({ open, closeCartHandler, customerId }) => {
                       d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
                     />
                   </svg>
-                  <span>Save &amp; Download</span>
+                  <span>{isSaving ? "Saving..." : "Save & Download"}</span>
                 </button>
               </div>
               <div className="flex justify-end items-center">

@@ -18,18 +18,17 @@ const LoginForm = () => {
   const { dispatch } = useAppContext();
   const { snackbarAnimation, spinnerAnimationStart, spinnerAnimationStop } =
     useAnimation();
-  const { restoreUserSession, handleUserLogin } = useSessionManagement();
+  const { handleUserLogin } = useSessionManagement();
   const {
     state: { isAuthenticated },
   } = useAuthContext();
   const { email, password } = data as Login;
 
   useEffect(() => {
-    restoreUserSession();
     if (isAuthenticated) {
       navigate("/admin/dashboard");
     }
-  }, [restoreUserSession, isAuthenticated]);
+  }, [isAuthenticated, navigate]);
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

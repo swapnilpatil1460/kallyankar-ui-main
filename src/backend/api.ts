@@ -1,7 +1,7 @@
 import axios, { AxiosInstance, AxiosResponse, AxiosError } from "axios";
 
-const baseURL = "https://kallyankar-api-service.onrender.com/"; // Your API base URL
-//"http://localhost:3001/"; //
+const baseURL =
+  import.meta.env.VITE_API_BASE_URL ?? "https://kallyankar-api-service.onrender.com/";
 // Create Axios instance with base URL
 const api: AxiosInstance = axios.create({
   baseURL: baseURL,
@@ -11,8 +11,12 @@ const api: AxiosInstance = axios.create({
 api.interceptors.request.use((config) => {
   const user = localStorage.getItem("candidate");
   if (user) {
-    const { token } = JSON.parse(user);
-    config.headers.Authorization = `Bearer ${token}`;
+    try {
+      const { token } = JSON.parse(user) as { token?: string };
+      if (token) config.headers.Authorization = `Bearer ${token}`;
+    } catch {
+      localStorage.removeItem("candidate");
+    }
   }
   return config;
 });

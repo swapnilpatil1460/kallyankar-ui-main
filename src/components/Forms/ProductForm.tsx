@@ -40,7 +40,6 @@ const ProductForm: React.FC = () => {
     vehicle_number,
     quantity,
   } = data as Product;
-  console.log(data, quantity, serial_numbers?.length);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -86,15 +85,25 @@ const ProductForm: React.FC = () => {
     } else {
       try {
         spinnerAnimationStart();
-        updateProductById(data as Product, _id ?? "");
+        await updateProductById(productData as Product, _id ?? "");
         spinnerAnimationStop();
         snackbarAnimation(ERRORS.SUCCESS, "success");
+        dispatch({ type: "REFRESH_EFFECT", payload: !state.refreshEffect });
+        dispatch({ type: "HIDE_SHOW_FORM", payload: false });
       } catch (err) {
         spinnerAnimationStop();
         snackbarAnimation(ERRORS.FAILURE, "error");
       }
     }
   };
+
+  useEffect(() => {
+    setSerialNumbers(
+      _product && "serial_number" in _product && _product.serial_number
+        ? _product.serial_number.split(",").map((serial) => serial.trim())
+        : []
+    );
+  }, [_product]);
 
   useEffect(() => {
     (async () => {

@@ -3,7 +3,8 @@ import { State, User } from "./types";
 type Action =
   | { type: "SET_USER"; payload: User | null }
   | { type: "SET_IS_LOGGED_IN"; payload: boolean }
-  | { type: "SET_SESSION_EXPIRATION"; payload: number };
+  | { type: "SET_SESSION_EXPIRATION"; payload: number }
+  | { type: "SET_SESSION_RESTORED"; payload: boolean };
 
 type Dispatch = (action: Action) => void;
 
@@ -28,6 +29,11 @@ export const authReducer = (state: State, action: Action) => {
       return {
         ...state,
         expiration_duration: action.payload,
+      };
+    case "SET_SESSION_RESTORED":
+      return {
+        ...state,
+        isSessionRestored: action.payload,
       };
     default:
       return state;

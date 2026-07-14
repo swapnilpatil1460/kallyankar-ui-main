@@ -1,6 +1,6 @@
 import api from "./api";
 
-import { Billing, BillingWithMessage } from "../store/type";
+import { Billing, BillingWithMessage, Product } from "../store/type";
 
 interface PaymentMsg {
   billingList: Billing[];
@@ -14,6 +14,10 @@ const postNewBilling = async (billing: Billing) => {
   });
   return data;
 };
+const postCheckout = async (products: Product[], billing: Billing) => {
+  const { data } = await api.post("billing/checkout", { products, billing });
+  return data;
+};
 const updateBillingById = async (billing: Billing, id: string) => {
   const { data } = await api.patch<Billing>("billing/update/" + id, billing);
   return data;
@@ -23,7 +27,7 @@ const deleteBillingById = async (id: string) => {
   return data;
 };
 const getBillingById = async (id: string) => {
-  const { data } = await api.delete<Billing>(
+  const { data } = await api.get<Billing>(
     "billing/customer-specific-list/" + id
   );
   return data;
@@ -41,6 +45,7 @@ const getBillingListByStatus = async ({ status }: { status: string }) => {
 
 export {
   postNewBilling,
+  postCheckout,
   updateBillingById,
   deleteBillingById,
   getBillingList,

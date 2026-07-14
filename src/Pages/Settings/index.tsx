@@ -4,7 +4,7 @@ import {
   SmartphoneIcon,
   UserIcon,
 } from "lucide-react";
-import * as XLSX from "xlsx";
+import ExcelJS from "exceljs";
 
 import { getBillingList } from "../../backend/billing";
 import { getCustomerListToExport } from "../../backend/customer";
@@ -55,31 +55,41 @@ const SettingsPage = () => {
         `Problem while exporting ${type.toLowerCase()} data`,
         "error"
       );
+    } finally {
+      spinnerAnimationStop();
     }
-    spinnerAnimationStop();
   };
 
-  const exportToExcel = (data: EXPORT, fileName: string): Promise<void> => {
-    return new Promise<void>((resolve, reject) => {
-      try {
-        // Create a worksheet from the customer data
-        if (data && data.length > 0) {
-          const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data);
+  const exportToExcel = async (data: EXPORT, fileName: string) => {
+    if (!data || data.length === 0) {
+      throw new Error("No data is available to export");
+    }
 
-          // Create a new workbook and append the worksheet
-          const workbook: XLSX.WorkBook = XLSX.utils.book_new();
-          XLSX.utils.book_append_sheet(workbook, worksheet, "export");
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet("export");
+    const headers = Object.keys(data[0]);
+    worksheet.addRow(headers);
+    worksheet.addRows(
+      data.map((record) =>
+        Object.values(record).map((value) =>
+          value !== null && typeof value === "object"
+            ? JSON.stringify(value)
+            : value
+        )
+      )
+    );
 
-          // Write the workbook to an Excel file
-          XLSX.writeFile(workbook, fileName);
-        }
-
-        resolve(); // Resolve the promise on success
-      } catch (error) {
-        console.error("Error exporting to Excel:", error);
-        reject(error); // Reject the promise on failure
-      }
-    });
+    const buffer = await workbook.xlsx.writeBuffer();
+    const url = URL.createObjectURL(
+      new Blob([buffer], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      })
+    );
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = fileName;
+    link.click();
+    URL.revokeObjectURL(url);
   };
 
   const cardsData: BackupCardProps[] = [

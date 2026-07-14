@@ -10,7 +10,7 @@ const useSessionExpirationWarning = () => {
   const { expiration_duration, isAuthenticated } = state;
   const { handleUserLogout } = useSessionManager();
 
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const updateFunction = () => {
     console.log("Session has been started!");
@@ -22,24 +22,24 @@ const useSessionExpirationWarning = () => {
     }
 
     if (expiration_duration < new Date().getTime()) {
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-      }
       handleUserLogout();
     }
   };
 
   useEffect(() => {
     if (isAuthenticated) {
-      timerRef.current = setInterval(updateFunction, FIVE_MINUTES);
+      updateFunction();
+      if (expiration_duration <= Date.now()) return;
+      const delay = Math.max(0, expiration_duration - Date.now());
+      timerRef.current = setTimeout(handleUserLogout, delay);
     }
 
     return () => {
       if (timerRef.current) {
-        clearInterval(timerRef.current);
+        clearTimeout(timerRef.current);
       }
     };
-  }, [expiration_duration, isAuthenticated]);
+  }, [expiration_duration, isAuthenticated, handleUserLogout]);
 };
 
 export default useSessionExpirationWarning;

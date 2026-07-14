@@ -1,20 +1,23 @@
 import React from "react";
 import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid,
-  Tooltip, ResponsiveContainer, Legend,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Cell,
 } from "recharts";
-import { RevenueExpenseData } from "../../hooks/useDashboardData";
+import { MonthlyData } from "../../hooks/useDashboardData";
 
-interface Props {
-  data: RevenueExpenseData[];
+interface ProductsSoldChartProps {
+  data: MonthlyData[];
   isLoading?: boolean;
 }
 
-const formatRupees = (v: number) => {
-  if (v >= 100000) return `₹${(v / 100000).toFixed(1)}L`;
-  if (v >= 1000) return `₹${(v / 1000).toFixed(1)}K`;
-  return `₹${v}`;
-};
+const COLORS = ["#f59e0b", "#fbbf24", "#fcd34d", "#fde68a", "#fef3c7", "#fffbeb",
+  "#f97316", "#fb923c", "#fdba74", "#fed7aa", "#ffedd5", "#fff7ed"];
 
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
@@ -24,18 +27,16 @@ const CustomTooltip = ({ active, payload, label }: any) => {
         borderRadius: "10px", fontSize: "13px", boxShadow: "0 4px 16px rgba(0,0,0,0.3)"
       }}>
         <p style={{ margin: 0, fontWeight: 700 }}>{label}</p>
-        {payload.map((p: any, i: number) => (
-          <p key={i} style={{ margin: "4px 0 0", color: p.fill }}>
-            {p.name}: ₹{Number(p.value).toLocaleString("en-IN")}
-          </p>
-        ))}
+        <p style={{ margin: "4px 0 0", color: "#fbbf24" }}>
+          {payload[0].value} batteries sold
+        </p>
       </div>
     );
   }
   return null;
 };
 
-const RevenueExpenseComparison: React.FC<Props> = ({ data, isLoading }) => {
+const ProductsSoldChart: React.FC<ProductsSoldChartProps> = ({ data, isLoading }) => {
   return (
     <div style={{
       background: "#ffffff", borderRadius: "16px", padding: "20px",
@@ -43,10 +44,10 @@ const RevenueExpenseComparison: React.FC<Props> = ({ data, isLoading }) => {
     }}>
       <div style={{ marginBottom: "16px" }}>
         <h2 style={{ margin: 0, fontSize: "15px", fontWeight: 700, color: "#0f172a" }}>
-          Revenue vs Unpaid
+          Monthly Products Sold
         </h2>
         <p style={{ margin: "4px 0 0", fontSize: "12px", color: "#94a3b8" }}>
-          Monthly billed revenue compared to outstanding unpaid amounts
+          Number of batteries sold each month
         </p>
       </div>
 
@@ -54,18 +55,23 @@ const RevenueExpenseComparison: React.FC<Props> = ({ data, isLoading }) => {
         <div style={{ height: 260, background: "#f8fafc", borderRadius: "12px", animation: "pulse 1.5s infinite" }} />
       ) : data.length === 0 ? (
         <div style={{ height: 260, display: "flex", alignItems: "center", justifyContent: "center", color: "#94a3b8", fontSize: "14px" }}>
-          No billing data available
+          No sales data available
         </div>
       ) : (
         <ResponsiveContainer width="100%" height={260}>
-          <BarChart data={data} barSize={18} barGap={4}>
+          <BarChart data={data} barSize={28}>
             <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
             <XAxis dataKey="month" tick={{ fontSize: 12, fill: "#64748b" }} axisLine={false} tickLine={false} />
-            <YAxis tickFormatter={formatRupees} tick={{ fontSize: 11, fill: "#64748b" }} axisLine={false} tickLine={false} />
-            <Tooltip content={<CustomTooltip />} cursor={{ fill: "#f8fafc" }} />
-            <Legend formatter={(v) => <span style={{ fontSize: "12px", color: "#374151" }}>{v}</span>} />
-            <Bar dataKey="revenue" name="Revenue" fill="#6366f1" radius={[4, 4, 0, 0]} />
-            <Bar dataKey="unpaid" name="Unpaid" fill="#ef4444" radius={[4, 4, 0, 0]} />
+            <YAxis tick={{ fontSize: 12, fill: "#64748b" }} axisLine={false} tickLine={false} allowDecimals={false} />
+            <Tooltip content={<CustomTooltip />} cursor={{ fill: "#fef9c3", radius: 4 }} />
+            <Bar dataKey="value" radius={[6, 6, 0, 0]}>
+              {data.map((_, index) => (
+                <Cell
+                  key={`cell-${index}`}
+                  fill={index === data.length - 1 ? "#f59e0b" : "#fcd34d"}
+                />
+              ))}
+            </Bar>
           </BarChart>
         </ResponsiveContainer>
       )}
@@ -73,4 +79,4 @@ const RevenueExpenseComparison: React.FC<Props> = ({ data, isLoading }) => {
   );
 };
 
-export default RevenueExpenseComparison;
+export default ProductsSoldChart;

@@ -14,4 +14,5 @@ export type State = {
   user: User | null;
   isAuthenticated: boolean;
   expiration_duration: number;
+  isSessionRestored: boolean;
 };

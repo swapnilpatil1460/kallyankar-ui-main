@@ -8,8 +8,8 @@ interface ProductMsg {
 }
 
 const postNewProduct = async (product: Product) => {
-  delete product._id;
-  const { data } = await api.post<Product>("product/post", product);
+  const { _id, ...newProduct } = product;
+  const { data } = await api.post<Product>("product/post", newProduct);
   return data;
 };
 const updateProductById = async (product: Product, id: string) => {
