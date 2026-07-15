@@ -31,7 +31,7 @@ const CartItems: React.FC<Props> = ({ open, closeCartHandler, customerId }) => {
   const { data: customer } = useApiCall(getCustomerById, params);
 
   const handlePrint = useReactToPrint({
-    content: () => contentRef.current,
+    contentRef: contentRef,
     documentTitle: `${customer?.name ?? "Invoice"} ${new Date().toLocaleDateString()}`,
   });
 
