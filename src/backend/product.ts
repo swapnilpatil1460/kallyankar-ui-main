@@ -25,14 +25,14 @@ const getProductList = async () => {
   return data.soldList;
 };
 const getProductListToExport = async () => {
-  const { data } = await api.get<Product[]>("product/list-to-export");
-  return data;
+  const { data } = await api.get<any>("product/list-to-export");
+  return data.soldList || data;
 };
 const getProductByCustomerId = async ({ id }: { id: string }) => {
-  const { data } = await api.get<Product[]>(
+  const { data } = await api.get<any>(
     "product/customer-specific-list/" + id
   );
-  return data;
+  return data.soldList || data;
 };
 
 export {
@@ -43,4 +43,3 @@ export {
   getProductByCustomerId,
   getProductListToExport,
 };
-
