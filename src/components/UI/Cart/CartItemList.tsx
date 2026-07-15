@@ -54,105 +54,76 @@ const CartItemsList: React.FC<CartListPs> = ({ setTotal }) => {
       ...section,
       total: section.GST + section.subTotal,
     };
-  }, []);
+  }, [storedCartItems, calculatePriceAndUnitPrice]);
 
   return (
-    <div className="w-full bg-white shadow-md rounded-md">
-      <table className="min-w-full border-collapse border border-gray-300 text-sm">
+    <div className="w-full bg-white px-4">
+      <table className="w-full border-2 border-black text-sm text-left border-collapse">
         <thead>
-          <tr className="bg-gray-200">
-            <th className="border border-gray-300 p-3">Item#</th>
-            <th className="border border-gray-300 p-3">Company</th>
-            <th className="border border-gray-300 p-3">Model</th>
-            <th className="border border-gray-300 p-3">Qty</th>
-            <th className="border border-gray-300 p-3">Serial No</th>
-            <th className="border border-gray-300 p-3">Unit Price</th>
-            <th className="border border-gray-300 p-3">Price</th>
+          <tr className="border-b-2 border-black text-black bg-white">
+            <th className="border-r border-black p-2 uppercase text-xs w-10 text-center">#</th>
+            <th className="border-r border-black p-2 uppercase text-xs">Item Description</th>
+            <th className="border-r border-black p-2 uppercase text-xs text-center w-12">Qty</th>
+            <th className="border-r border-black p-2 uppercase text-xs w-32">Serial No</th>
+            <th className="border-r border-black p-2 uppercase text-xs text-right w-24">Unit Price</th>
+            <th className="p-2 uppercase text-xs text-right w-28">Total</th>
           </tr>
         </thead>
         <tbody>
           {storedCartItems.length > 0 &&
             storedCartItems.map((item: Product, index: number) => (
-              <tr
-                key={index}
-                className="bg-white border-b text-sm dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
-              >
-                <td className="border border-gray-300 p-3">{index + 1}</td>
-                <td className="border border-gray-300 p-3">{item.name}</td>
-                <td className="border border-gray-300 p-3">
-                  {item.product_code}
+              <tr key={index} className="border-b border-black">
+                <td className="border-r border-black p-2 text-center align-top">{index + 1}</td>
+                <td className="border-r border-black p-2 align-top">
+                  <div className="font-bold text-black">{item.name}</div>
+                  <div className="text-xs text-black">Model: {item.product_code}</div>
                 </td>
-                <td className="border border-gray-300 p-3">{item.quantity}</td>
-                <td className="border border-gray-300 p-3">
+                <td className="border-r border-black p-2 text-center align-top">{item.quantity}</td>
+                <td className="border-r border-black p-2 text-xs font-mono align-top max-w-[150px] break-words">
                   {item.serial_number}
                 </td>
-                <td className="border border-gray-300 p-3">
-                  {
-                    calculatePriceAndUnitPrice(
-                      item.price,
-                      item.quantity,
-                      item.GST
-                    ).unitPrice
-                  }
+                <td className="border-r border-black p-2 text-right align-top">
+                  {calculatePriceAndUnitPrice(item.price, item.quantity, item.GST).unitPrice}
                 </td>
-                <td className="border border-gray-300 p-3">
-                  {
-                    calculatePriceAndUnitPrice(
-                      item.price,
-                      item.quantity,
-                      item.GST
-                    ).price
-                  }
+                <td className="p-2 text-right align-top">
+                  {calculatePriceAndUnitPrice(item.price, item.quantity, item.GST).price}
                 </td>
               </tr>
             ))}
+
           {/* Totals Section */}
-          <tr>
-            <td
-              className="border border-gray-300 p-3 text-left"
-              align="right"
-              colSpan={5}
-            >
-              Invoice Subtotal:
-            </td>
-            <td colSpan={5} className="border border-gray-300 p-3 ">
+          <tr className="border-b border-black">
+            <td colSpan={4} className="border-r border-black p-2 border-b-0"></td>
+            <td className="border-r border-black p-2 text-right text-xs uppercase font-semibold">Subtotal:</td>
+            <td className="p-2 text-right font-medium">
               {calculateGSTAndTotal().subTotal}
             </td>
           </tr>
-          <tr>
-            <td
-              className="border border-gray-300 p-3 text-left"
-              align="right"
-              colSpan={5}
-            >
-              {`CGST(${calculateGSTAndTotal().gst}%)`}:
+          <tr className="border-b border-black">
+            <td colSpan={4} className="border-r border-black p-2 border-t-0 border-b-0"></td>
+            <td className="border-r border-black p-2 text-right text-xs uppercase font-semibold">
+              CGST ({calculateGSTAndTotal().gst}%):
             </td>
-            <td colSpan={5} className="border border-gray-300 p-3 ">
+            <td className="p-2 text-right font-medium">
               {calculateGSTAndTotal().GST / 2}
             </td>
           </tr>
-          <tr>
-            <td
-              className="border border-gray-300 p-3 text-left"
-              align="right"
-              colSpan={5}
-            >
-              {`SGST(${calculateGSTAndTotal().gst}%)`}:
+          <tr className="border-b-2 border-black">
+            <td colSpan={4} className="border-r border-black p-2 border-t-0"></td>
+            <td className="border-r border-black p-2 text-right text-xs uppercase font-semibold">
+              SGST ({calculateGSTAndTotal().gst}%):
             </td>
-            <td colSpan={5} className="border border-gray-300 p-3 ">
+            <td className="p-2 text-right font-medium">
               {calculateGSTAndTotal().GST / 2}
             </td>
           </tr>
-          <tr className="font-bold">
-            <td
-              className="border border-gray-300 p-3 text-left"
-              align="right"
-              colSpan={5}
-            >
-              TOTAL:
+          <tr className="bg-white">
+            <td colSpan={4} className="border-r border-black p-2"></td>
+            <td className="border-r border-black p-3 text-right uppercase font-bold text-base">
+              Grand Total:
             </td>
-            <td colSpan={5} className="border border-gray-300 p-3 ">
-              {calculateGSTAndTotal().total}
+            <td className="p-3 text-right font-bold text-base">
+              ₹ {calculateGSTAndTotal().total}
             </td>
           </tr>
         </tbody>
