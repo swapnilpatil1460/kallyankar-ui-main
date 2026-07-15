@@ -1,8 +1,5 @@
-let baseURL = "http://localhost:3001";
-
-process.env.NODE_ENV === "development"
-  ? (baseURL = "http://localhost:3001")
-  : "";
+// Use the VITE_API_URL environment variable if provided, otherwise default to local development backend
+let baseURL = import.meta.env.VITE_API_URL || "http://localhost:3001";
 
 export const api = {
   customer_GET: baseURL + "/customer",
