@@ -9,8 +9,8 @@ import { getCustomerById } from "../../../backend/customer";
 import useApiCall from "../../../hooks/useApiCall";
 import InvoiceHeading from "./InvoiceHeading";
 import CartItemsList from "./CartItemList";
-import { usePdfDownloader } from "../../../hooks";
 import useAnimation from "../../../hooks/useAnimation";
+import { useReactToPrint } from "react-to-print";
 
 interface Props {
   open: boolean;
@@ -23,13 +23,17 @@ const CartItems: React.FC<Props> = ({ open, closeCartHandler, customerId }) => {
   const { storedCartItems, refreshEffect } = state;
   const [billStatus, setBillStatus] = useState("Paid");
   const contentRef = useRef<HTMLDivElement>(null);
-  const { handleDownloadPDF } = usePdfDownloader();
   const [payment, setTotalAmount] = useState({ total: 0, gst: 0 });
   const [inputFieldAmount, setInputAmount] = useState(payment.total.toString());
   const [isSaving, setIsSaving] = useState(false);
   const { snackbarAnimation } = useAnimation();
   const params = useMemo(() => ({ id: customerId }), [customerId]);
   const { data: customer } = useApiCall(getCustomerById, params);
+
+  const handlePrint = useReactToPrint({
+    content: () => contentRef.current,
+    documentTitle: `${customer?.name ?? "Invoice"} ${new Date().toLocaleDateString()}`,
+  });
 
   const handleAmountValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const amount = e.target.value;
@@ -56,10 +60,8 @@ const CartItems: React.FC<Props> = ({ open, closeCartHandler, customerId }) => {
         customerId,
       });
 
-      handleDownloadPDF(
-        contentRef.current as HTMLDivElement,
-        `${customer?.name ?? ""} ${new Date()}`
-      );
+      handlePrint();
+
       dispatch({ type: "ADD_STORED_CART_ITEMS", payload: [] });
       dispatch({ type: "REFRESH_EFFECT", payload: !refreshEffect });
       closeCartHandler();
