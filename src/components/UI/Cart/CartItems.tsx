@@ -10,7 +10,8 @@ import useApiCall from "../../../hooks/useApiCall";
 import InvoiceHeading from "./InvoiceHeading";
 import CartItemsList from "./CartItemList";
 import useAnimation from "../../../hooks/useAnimation";
-import { useReactToPrint } from "react-to-print";
+import { toPng } from "html-to-image";
+import jsPDF from "jspdf";
 
 interface Props {
   open: boolean;
@@ -30,21 +31,36 @@ const CartItems: React.FC<Props> = ({ open, closeCartHandler, customerId }) => {
   const params = useMemo(() => ({ id: customerId }), [customerId]);
   const { data: customer } = useApiCall(getCustomerById, params);
 
-  const now = new Date();
-  const dateStr = now.toLocaleDateString().replace(/\//g, "-");
-  const timeStr = now.toLocaleTimeString().replace(/:/g, "-");
-  
-  const handlePrint = useReactToPrint({
-    contentRef: contentRef,
-    documentTitle: `${customer?.name ?? "Invoice"}_${dateStr}_${timeStr}`,
-  });
-
   const handleAmountValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const amount = e.target.value;
     const maxAmount = payment.total - 1;
     setInputAmount(
       amount === "" || parseInt(amount) <= maxAmount ? amount : inputFieldAmount
     );
+  };
+
+  const handleDirectDownload = async () => {
+    if (contentRef.current) {
+      try {
+        const dataUrl = await toPng(contentRef.current, {
+          cacheBust: true,
+          quality: 1.0,
+          backgroundColor: "#ffffff",
+        });
+        const pdf = new jsPDF();
+        const imgProps = pdf.getImageProperties(dataUrl);
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+        pdf.addImage(dataUrl, "PNG", 0, 0, pdfWidth, pdfHeight);
+        
+        const now = new Date();
+        const dateStr = now.toLocaleDateString().replace(/\//g, "-");
+        const timeStr = now.toLocaleTimeString().replace(/:/g, "-");
+        pdf.save(`${customer?.name ?? "Invoice"}_${dateStr}_${timeStr}.pdf`);
+      } catch (err) {
+        console.error("Failed to generate PDF", err);
+      }
+    }
   };
 
   const saveAsPDFHandler = async () => {
@@ -64,7 +80,7 @@ const CartItems: React.FC<Props> = ({ open, closeCartHandler, customerId }) => {
         customerId,
       });
 
-      handlePrint();
+      await handleDirectDownload();
 
       dispatch({ type: "ADD_STORED_CART_ITEMS", payload: [] });
       dispatch({ type: "REFRESH_EFFECT", payload: !refreshEffect });

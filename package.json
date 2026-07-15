@@ -19,6 +19,7 @@
     "flowbite": "^2.3.0",
     "flowbite-react": "^0.8.0",
     "framer-motion": "^10.16.4",
+    "html-to-image": "^1.11.13",
     "html2canvas": "^1.4.1",
     "jspdf": "^4.2.1",
     "lucide-react": "^0.292.0",
