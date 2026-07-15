@@ -1,28 +1,26 @@
 import useHandlevalueChange from "../../hooks/useHandleValueChange";
 import { user, Login } from "../../store/type";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useAppContext from "../../hooks/useAppContext";
 import { postUserLogin } from "../../backend/user";
 
 import useAnimation from "../../hooks/useAnimation";
-import ButtonSave from "../UI/Button/ButtonSave";
 import { LoginSchema } from "../../zod";
 import { ERRORS } from "../../zod/zod_error";
 import useAuthContext from "../../auth-store/useAuthContext";
 import useSessionManagement from "../../hooks/useSessionManagement";
+import { Mail, Lock, Loader2 } from "lucide-react";
 
 const LoginForm = () => {
   const navigate = useNavigate();
   const { data, setValue } = useHandlevalueChange(user);
   const { dispatch } = useAppContext();
-  const { snackbarAnimation, spinnerAnimationStart, spinnerAnimationStop } =
-    useAnimation();
+  const { snackbarAnimation } = useAnimation();
   const { handleUserLogin } = useSessionManagement();
-  const {
-    state: { isAuthenticated },
-  } = useAuthContext();
+  const { state: { isAuthenticated } } = useAuthContext();
   const { email, password } = data as Login;
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -37,66 +35,90 @@ const LoginForm = () => {
       const testValid = LoginSchema.safeParse({ email, password });
       if (!testValid.success) {
         const errors = testValid.error.flatten();
-        const { email, password } = errors.fieldErrors;
-        email && snackbarAnimation(ERRORS.EMAIL, "error");
-        password && snackbarAnimation(ERRORS.PASSWORD, "error");
+        const { email: emailErr, password: passErr } = errors.fieldErrors;
+        emailErr && snackbarAnimation(ERRORS.EMAIL, "error");
+        passErr && snackbarAnimation(ERRORS.PASSWORD, "error");
         return;
       }
 
-      spinnerAnimationStart();
+      setIsLoading(true);
       const response = await postUserLogin(data as Login);
       snackbarAnimation("Succesfully Login", "success");
       dispatch({ type: "SET_LOADING", payload: false });
-      const { token, user, expiresIn } = response;
-      handleUserLogin({ ...user, token, expiration: expiresIn.toString() });
+      const { token, user: loggedInUser, expiresIn } = response;
+      handleUserLogin({ ...loggedInUser, token, expiration: expiresIn.toString() });
       navigate("/admin/dashboard");
-      spinnerAnimationStop();
     } catch (error) {
-      spinnerAnimationStop();
       snackbarAnimation("Username or password incorrect!", "error");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <form
-      onSubmit={handleFormSubmit}
-      className="px-6 md:px-28 py-5 text-[#333300]"
-    >
-      <div className="mb-4 w-full">
-        <label
-          className="block mb-2 text-sm font-bold tracking-wide"
-          htmlFor="email"
-        >
-          Admin Email.
+    <form onSubmit={handleFormSubmit} className="space-y-6">
+      
+      {/* Email Input */}
+      <div>
+        <label className="block text-sm font-medium text-gray-300 mb-2" htmlFor="email">
+          Email Address
         </label>
-        <input
-          className="w-full h-10 px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline tracking-wide"
-          name="email"
-          id="email"
-          type="text"
-          placeholder="Email"
-          onChange={setValue}
-          value={email}
-        />
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <Mail className="h-5 w-5 text-gray-500" />
+          </div>
+          <input
+            className="block w-full pl-10 pr-3 py-3 border border-theme-c3 rounded-lg leading-5 bg-theme-bg text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-theme-c1 focus:border-theme-c1 transition-colors sm:text-sm"
+            name="email"
+            id="email"
+            type="email"
+            placeholder="admin@kallyankar.com"
+            onChange={setValue}
+            value={email}
+            disabled={isLoading}
+          />
+        </div>
       </div>
-      <div className="mb-4 w-full">
-        <label
-          className="block mb-2 text-sm font-bold tracking-wide"
-          htmlFor="password"
-        >
-          Admin Password.
+
+      {/* Password Input */}
+      <div>
+        <label className="block text-sm font-medium text-gray-300 mb-2" htmlFor="password">
+          Password
         </label>
-        <input
-          className="w-full h-10 px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline tracking-wide"
-          name="password"
-          id="password"
-          type="password"
-          placeholder="Password"
-          onChange={setValue}
-          value={password}
-        />
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <Lock className="h-5 w-5 text-gray-500" />
+          </div>
+          <input
+            className="block w-full pl-10 pr-3 py-3 border border-theme-c3 rounded-lg leading-5 bg-theme-bg text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-theme-c1 focus:border-theme-c1 transition-colors sm:text-sm"
+            name="password"
+            id="password"
+            type="password"
+            placeholder="••••••••"
+            onChange={setValue}
+            value={password}
+            disabled={isLoading}
+          />
+        </div>
       </div>
-      <ButtonSave title="Login" />
+
+      {/* Submit Button */}
+      <div className="pt-2">
+        <button
+          type="submit"
+          disabled={isLoading}
+          className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-bold text-white bg-theme-c1 hover:bg-theme-c1-b focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-c1 transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
+        >
+          {isLoading ? (
+            <>
+              <Loader2 className="animate-spin -ml-1 mr-2 h-5 w-5 text-white" />
+              Authenticating...
+            </>
+          ) : (
+            "Sign In"
+          )}
+        </button>
+      </div>
     </form>
   );
 };

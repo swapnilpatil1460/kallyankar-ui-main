@@ -15,10 +15,11 @@ module.exports = {
         regular: "12px",
       },
       colors: {
-        "theme-c1": "#006c32",
-        "theme-c1-b": "#6c8213",
-        "theme-c2": "#000000",
-        "theme-c3": "#ffffff",
+        "theme-c1": "#cc0000", // Amaron Red
+        "theme-c1-b": "#a30000", // Darker Red for hover
+        "theme-c2": "#1e1e1e", // Mid-level black for cards
+        "theme-c3": "#2d2d2d", // Borders/Hover states
+        "theme-bg": "#121212", // Mid-level black background
       },
     },
   },

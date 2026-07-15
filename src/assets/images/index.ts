@@ -1,4 +1,4 @@
-export { default as KalyankarLogo } from "./kalyankar_logo.png";
+export { default as KalyankarLogo } from "./kalyankar_logo_new.jpg";
 export { default as KalyankarShop } from "./shop.jpg";
 export { default as LandingPageBattery } from "./battery_landing_page.jpg";
 export { default as KB_1 } from "./kb-1.jpg";

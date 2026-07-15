@@ -1,44 +1,30 @@
 import LoginForm from "../components/Forms/LoginForm";
-import Heading from "../components/UI/Heading";
-
-const styleSection = {
-  backgroundImage:
-    "linear-gradient(to right bottom, rgba(102, 179, 255, 0.8), rgba(191, 255, 0.8))",
-};
-
-const styleHeading = {
-  fontSize: "1.5rem",
-  fontWeight: 900,
-  backgroundImage: "linear-gradient(to right, #ffffff, #ffffcc)",
-  WebkitBackgroundClip: "text",
-  color: "transparent",
-  letterSpacing: "0.2rem",
-  transition: "all 0.2s",
-};
+import { KalyankarLogo } from "../assets/images";
 
 const LoginPage = () => {
   return (
-    <section className="min-h-screen mx-0 md:mx-auto" style={styleSection}>
-      <div className="h-full">
-        <div className="g-6 flex  h-full items-center justify-center ">
-          <div className="shrink-1 mb-12 grow-0 basis-auto md:mb-0 md:w-9/12 md:shrink-0 lg:w-6/12 xl:w-6/12 hidden md:block">
-            <img
-              src="https://tecdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
-              className="w-full"
-              alt="Sample image"
-            />
-          </div>
-          <div className="mb-12 md:mb-0 md:w-8/12 lg:w-5/12 xl:w-5/12 py-4 flex-col justify-center items-center w-100">
-            <div className="pt-5 w-full">
-              <h1
-                className="text-center animate-bounce uppercase"
-                style={styleHeading}
-              >
-                Kalyankar Batteries
-              </h1>
-            </div>
-            <LoginForm />
-          </div>
+    <section className="min-h-screen w-full bg-theme-bg flex items-center justify-center p-4">
+      <div className="w-full max-w-md">
+        
+        {/* Brand Header */}
+        <div className="text-center mb-10 flex flex-col items-center">
+          <span className="rounded-2xl bg-white p-2 shadow-lg mb-6 inline-block">
+            <img src={KalyankarLogo} alt="Kalyankar Batteries" className="h-20 w-20 rounded-xl object-contain" />
+          </span>
+          <h1 className="text-3xl font-bold text-white tracking-widest uppercase mb-2">
+            Kalyankar <span className="text-theme-c1">Batteries</span>
+          </h1>
+          <p className="text-gray-400 text-sm">Sign in to access your dashboard</p>
+        </div>
+
+        {/* Authentication Card */}
+        <div className="bg-theme-c2 rounded-xl shadow-2xl border border-theme-c3 p-8">
+          <LoginForm />
+        </div>
+        
+        {/* Footer info */}
+        <div className="mt-8 text-center text-xs text-gray-500">
+          <p>&copy; {new Date().getFullYear()} Kalyankar Batteries. Authorized Access Only.</p>
         </div>
       </div>
     </section>
