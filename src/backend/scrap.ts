@@ -13,4 +13,12 @@ const deleteScrapById = async (id: string) => {
   return data;
 };
 
-export { getScrapList, deleteScrapById };
+const addScrap = async (scrap: Partial<Scrap>) => {
+  const { data } = await api.post<{ message: string; scrap: Scrap }>(
+    `scrap/add`,
+    scrap
+  );
+  return data;
+};
+
+export { getScrapList, deleteScrapById, addScrap };
