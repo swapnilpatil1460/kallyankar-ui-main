@@ -3,7 +3,7 @@ import api from "./api";
 
 const postNewAmphere = async (amphere: AmphareSize) => {
   const { size } = amphere;
-  const { data } = await api.post<AmphareSize>("amphere/add", {
+  const { data } = await api.post<AmphareSize>("amphere", {
     size: size + " AH",
   });
   return data;
@@ -36,4 +36,5 @@ export {
   getAmphereList,
   getAmphereSizeById,
 };
+
 
