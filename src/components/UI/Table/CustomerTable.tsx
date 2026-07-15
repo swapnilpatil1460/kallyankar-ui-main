@@ -43,7 +43,7 @@ const CustomerTable: React.FC<CustomerTableProps> = ({ data }) => {
         />
       ) : (
         <table className="table-auto w-full bg-white shadow-lg rounded-lg overflow-hidden font-sans">
-          <thead className="bg-indigo-600 text-gray-700">
+          <thead className="bg-indigo-600 text-white ">
             <tr>
               {CUSTOMER_TABLE_COLUMN.map((col, index) => (
                 <th
