@@ -18,7 +18,7 @@ const deleteBatteryById = async (id: string) => {
   return data;
 };
 const getBatteryList = async () => {
-  const { data } = await api.get<BatteryNameValues[]>(mid + "/list");
+  const { data } = await api.get<BatteryNameValues[]>(mid);
   return data;
 };
 
@@ -34,3 +34,4 @@ export {
   getBatteryList,
   getBatterySizeById,
 };
+

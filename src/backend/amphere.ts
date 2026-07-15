@@ -20,7 +20,7 @@ const deleteAmphereById = async (id: string) => {
   return data;
 };
 const getAmphereList = async () => {
-  const { data } = await api.get<AmphareSize[]>("amphere/list");
+  const { data } = await api.get<AmphareSize[]>("amphere");
   return data;
 };
 
@@ -36,3 +36,4 @@ export {
   getAmphereList,
   getAmphereSizeById,
 };
+

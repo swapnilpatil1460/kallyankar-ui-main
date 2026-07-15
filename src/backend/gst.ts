@@ -14,7 +14,7 @@ const deleteGSTById = async (id: string) => {
   return data;
 };
 const getGSTList = async () => {
-  const { data } = await api.get<GSTValues[]>("gst/list");
+  const { data } = await api.get<GSTValues[]>("gst");
   return data;
 };
 
@@ -24,3 +24,4 @@ const getGSTById = async (id: string) => {
 };
 
 export { postNewGST, updateGSTById, deleteGSTById, getGSTList, getGSTById };
+
