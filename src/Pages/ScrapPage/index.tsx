@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Layout from "../../components/Layout";
+import Layout from "../../components/navigation/Layout";
 import { getScrapList, deleteScrapById } from "../../backend/scrap";
 import { Scrap } from "../../store/type";
 import useAnimation from "../../hooks/useAnimation";
