@@ -46,7 +46,6 @@ const PayUnpaidAmount: React.FC<Props> = ({ data, show, setHide }) => {
       setInputAmount(() => inputAmount);
     }
   };
-  const { handleDownloadPDF } = usePdfDownloader();
   const hideModule = () => {
     setHide(false);
   };
@@ -59,6 +58,33 @@ const PayUnpaidAmount: React.FC<Props> = ({ data, show, setHide }) => {
     setStatus(status);
   };
 
+  const handleDirectDownload = async () => {
+    if (contentRef.current) {
+      try {
+        const { toPng } = await import("html-to-image");
+        const { default: jsPDF } = await import("jspdf");
+        
+        const dataUrl = await toPng(contentRef.current, {
+          cacheBust: true,
+          quality: 1.0,
+          backgroundColor: "#ffffff",
+        });
+        const pdf = new jsPDF();
+        const imgProps = pdf.getImageProperties(dataUrl);
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+        pdf.addImage(dataUrl, "PNG", 0, 0, pdfWidth, pdfHeight);
+        
+        const now = new Date();
+        const dateStr = now.toLocaleDateString().replace(/\//g, "-");
+        const timeStr = now.toLocaleTimeString().replace(/:/g, "-");
+        pdf.save(`${customer?.name ?? "Invoice"}_${dateStr}_${timeStr}_bill.pdf`);
+      } catch (err) {
+        console.error("Failed to generate PDF", err);
+      }
+    }
+  };
+
   const updateCustomerPayment = async () => {
     spinnerAnimationStart();
     const pendingAmount = unpaid_amount - parseInt(inputFieldAmount);
@@ -66,10 +92,8 @@ const PayUnpaidAmount: React.FC<Props> = ({ data, show, setHide }) => {
       unpaid_amount - parseInt(inputFieldAmount) === 0 ? "Paid" : "Unpaid";
     const body = { bill_status, unpaid_amount: pendingAmount };
     await updateBillingById(body, _id ?? "");
-    handleDownloadPDF(
-      contentRef.current as HTMLDivElement,
-      `${customer?.name ?? ""} ${new Date()}_bill`
-    );
+    
+    await handleDirectDownload();
 
     spinnerAnimationStop();
     snackbarAnimation("Record Updated successfully! ", "success");
