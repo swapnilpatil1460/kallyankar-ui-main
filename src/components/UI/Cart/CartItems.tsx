@@ -30,9 +30,13 @@ const CartItems: React.FC<Props> = ({ open, closeCartHandler, customerId }) => {
   const params = useMemo(() => ({ id: customerId }), [customerId]);
   const { data: customer } = useApiCall(getCustomerById, params);
 
+  const now = new Date();
+  const dateStr = now.toLocaleDateString().replace(/\//g, "-");
+  const timeStr = now.toLocaleTimeString().replace(/:/g, "-");
+  
   const handlePrint = useReactToPrint({
     contentRef: contentRef,
-    documentTitle: `${customer?.name ?? "Invoice"}_${new Date().toLocaleDateString().replace(/\//g, "-")}`,
+    documentTitle: `${customer?.name ?? "Invoice"}_${dateStr}_${timeStr}`,
   });
 
   const handleAmountValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
