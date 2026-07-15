@@ -15,6 +15,7 @@ const BATTERY_TABLE_COLUMN = [
   "SERIAL NUMBER",
   "PRICE",
   "SOLD ON",
+  "WARRANTY",
   "ACTION",
 ];
 

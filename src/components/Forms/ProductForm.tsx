@@ -39,6 +39,7 @@ const ProductForm: React.FC = () => {
     vehicle_name,
     vehicle_number,
     quantity,
+    warranty_months,
   } = data as Product;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -278,6 +279,23 @@ const ProductForm: React.FC = () => {
                 placeholder="Vehicle Number"
                 onChange={setValue}
                 value={vehicle_number}
+              />
+            </div>
+            <div className="mb-4 md:mr-2 md:mb-0 md:flex-grow">
+              <label
+                className="block mb-2 text-sm font-bold text-gray-700"
+                htmlFor="warranty_months"
+              >
+                Warranty (Months)
+              </label>
+              <input
+                className="w-full px-3 py-2 text-sm leading-tight border-theme-c3 rounded-lg bg-white text-gray-700 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-theme-c1 focus:border-theme-c1"
+                id="warranty_months"
+                type="number"
+                name="warranty_months"
+                placeholder="e.g. 24, 48"
+                onChange={setValue}
+                value={warranty_months || ""}
               />
             </div>
           </div>

@@ -220,6 +220,7 @@ export type Product = {
   _id?: string;
   customer?: string;
   createdAt?: string;
+  warranty_months?: number;
   quantity?: number;
   product_code?: string;
 };

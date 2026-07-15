@@ -29,6 +29,7 @@ export const ProductSchema = z.object({
   GST: z.string().trim(),
   vehicle_name: z.string().trim().optional().default("-"),
   vehicle_number: z.string().trim().optional().default("-"),
+  warranty_months: z.string().trim().optional().default("0"),
 });
 
 export const StockSchema = z.object({

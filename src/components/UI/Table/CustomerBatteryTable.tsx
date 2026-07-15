@@ -75,6 +75,23 @@ const FlowTable: React.FC<ProductTableProps> = ({ data }) => {
                 <td className="px-6 py-3 text-left text-xs  uppercase tracking-wider">
                   {dateFormater(row.createdAt ?? "")}
                 </td>
+                <td className="px-6 py-3 text-left text-xs uppercase tracking-wider">
+                  {(() => {
+                    if (!row.warranty_months) return "-";
+                    const soldDate = new Date(row.createdAt ?? "");
+                    const expiryDate = new Date(soldDate);
+                    expiryDate.setMonth(expiryDate.getMonth() + row.warranty_months);
+                    const isExpired = new Date() > expiryDate;
+                    return (
+                      <div className="flex flex-col gap-1 font-semibold">
+                        <span>{dateFormater(expiryDate.toISOString())}</span>
+                        <span className={`px-2 py-1 text-[10px] rounded-full w-fit ${isExpired ? "bg-red-100 text-red-600" : "bg-green-100 text-green-600"}`}>
+                          {isExpired ? "Expired" : "In Warranty"}
+                        </span>
+                      </div>
+                    );
+                  })()}
+                </td>
                 <td className="px-6 py-3 text-left text-xs  uppercase tracking-wider">
                   <button
                     onClick={() => editCustomerProduct(row._id ?? "")}
