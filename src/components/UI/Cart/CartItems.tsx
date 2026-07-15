@@ -27,6 +27,8 @@ const CartItems: React.FC<Props> = ({ open, closeCartHandler, customerId }) => {
   const [payment, setTotalAmount] = useState({ total: 0, gst: 0 });
   const [inputFieldAmount, setInputAmount] = useState(payment.total.toString());
   const [isSaving, setIsSaving] = useState(false);
+  const [exchangeBattery, setExchangeBattery] = useState(false);
+  const [exchangeData, setExchangeData] = useState({ name: "", type: "", value: 0 });
   const { snackbarAnimation } = useAnimation();
   const params = useMemo(() => ({ id: customerId }), [customerId]);
   const { data: customer } = useApiCall(getCustomerById, params);
@@ -75,10 +77,17 @@ const CartItems: React.FC<Props> = ({ open, closeCartHandler, customerId }) => {
 
       await postCheckout(storedCartItems, {
         gst_amount: payment.gst,
-        total_amount: payment.total,
+        total_amount: payment.total - (exchangeBattery ? exchangeData.value : 0),
         unpaid_amount: amount,
         bill_status: billStatus,
         customerId,
+        exchange_discount: exchangeBattery ? exchangeData.value : 0,
+        exchanged_batteries: exchangeBattery && exchangeData.value > 0 ? [{
+          battery_name: exchangeData.name,
+          amphere_size: exchangeData.type,
+          quantity: 1,
+          exchange_value: exchangeData.value
+        }] : []
       });
 
       await handleDirectDownload();
@@ -137,7 +146,10 @@ const CartItems: React.FC<Props> = ({ open, closeCartHandler, customerId }) => {
                 <div className="border-2 border-gray-600 p-2">
                   {customer && <InvoiceHeading customer={customer} />}
                   <div className="flex w-full justify-center items-center">
-                    <CartItemsList setTotal={setTotalAmount} />
+                    <CartItemsList 
+                      setTotal={setTotalAmount} 
+                      exchangeDiscount={exchangeBattery ? exchangeData.value : 0} 
+                    />
                   </div>
 
                   <div className="mt-10">
@@ -170,7 +182,18 @@ const CartItems: React.FC<Props> = ({ open, closeCartHandler, customerId }) => {
                 </div>
               </div>
 
-              <div className="text-left flex justify-between mt-6">
+              <div className="text-left flex flex-col mt-6 px-4">
+                <div className="flex items-center space-x-2 mb-4">
+                  <input type="checkbox" id="exchange" checked={exchangeBattery} onChange={(e) => setExchangeBattery(e.target.checked)} />
+                  <label htmlFor="exchange" className="text-sm font-medium">Exchange Old Battery?</label>
+                </div>
+                {exchangeBattery && (
+                  <div className="flex space-x-2 mb-4 bg-gray-50 p-3 rounded-md">
+                    <TextField label="Old Battery Name" size="small" value={exchangeData.name} onChange={(e) => setExchangeData({ ...exchangeData, name: e.target.value })} />
+                    <TextField label="Ampere Size" size="small" value={exchangeData.type} onChange={(e) => setExchangeData({ ...exchangeData, type: e.target.value })} />
+                    <TextField label="Exchange Value (₹)" type="number" size="small" value={exchangeData.value === 0 ? "" : exchangeData.value} onChange={(e) => setExchangeData({ ...exchangeData, value: parseInt(e.target.value) || 0 })} />
+                  </div>
+                )}
                 <div className="flex justify-between">
                   <PaymentStatus
                     status={billStatus}

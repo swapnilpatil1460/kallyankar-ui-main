@@ -8,6 +8,7 @@ import {
   SETTINGS,
   BATTERIES,
   USERS,
+  SCRAP,
 } from "./path";
 import Dashboard from "../../Pages/Dashboard";
 import LoginPage from "../../Pages/login-page";
@@ -22,6 +23,7 @@ import PageNotFound from "../../Pages/NotFoundPage";
 import useAuthContext from "../../auth-store/useAuthContext";
 import UserPage from "../../Pages/UsersPage";
 import SettingsPage from "../../Pages/Settings";
+import ScrapPage from "../../Pages/ScrapPage";
 
 const ProtectedRoute = ({ element }: { element: JSX.Element }) => {
   const {
@@ -48,6 +50,7 @@ const KallyankarRoute: React.FC = () => {
         <Route path={SETTINGS} element={<ProtectedRoute element={<SettingsPage />} />} />
         <Route path={STOCK} element={<ProtectedRoute element={<StockPage />} />} />
         <Route path={`${STOCK}/:stock_id`} element={<ProtectedRoute element={<StockItemPage />} />} />
+        <Route path={SCRAP} element={<ProtectedRoute element={<ScrapPage />} />} />
 
         <Route path="/*" element={<PageNotFound />} />
       </Routes>

@@ -245,6 +245,18 @@ export type Billing = {
   bill_status: string;
   createdAt?: string;
   customerId?: string;
+  exchange_discount?: number;
+  exchanged_batteries?: Scrap[];
+};
+
+export type Scrap = {
+  _id?: string;
+  battery_name: string;
+  amphere_size: string;
+  quantity: number;
+  exchange_value: number;
+  createdAt?: string;
+  customer?: string | Customer;
 };
 
 export type BillingWithMessage = {

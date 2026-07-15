@@ -15,7 +15,12 @@ const postNewBilling = async (billing: Billing) => {
   return data;
 };
 const postCheckout = async (products: Product[], billing: Billing) => {
-  const { data } = await api.post("billing/checkout", { products, billing });
+  const { exchanged_batteries, ...billingDetails } = billing;
+  const { data } = await api.post("billing/checkout", { 
+    products, 
+    billing: billingDetails,
+    exchanged_batteries 
+  });
   return data;
 };
 const updateBillingById = async (billing: Billing, id: string) => {

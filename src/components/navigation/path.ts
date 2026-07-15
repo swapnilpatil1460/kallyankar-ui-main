@@ -6,3 +6,4 @@ export const PRODUCT = "/admin/products";
 export const SETTINGS = "/admin/settings";
 export const BATTERIES = "/admin/batteries";
 export const USERS = "/admin/users";
+export const SCRAP = "/admin/scrap";

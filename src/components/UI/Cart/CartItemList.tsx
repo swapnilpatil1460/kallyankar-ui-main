@@ -9,8 +9,9 @@ type CartListPs = {
       gst: number;
     }>
   >;
+  exchangeDiscount?: number;
 };
-const CartItemsList: React.FC<CartListPs> = ({ setTotal }) => {
+const CartItemsList: React.FC<CartListPs> = ({ setTotal, exchangeDiscount = 0 }) => {
   const { state } = useAppContext();
   const { storedCartItems } = state;
   useEffect(() => {
@@ -143,16 +144,30 @@ const CartItemsList: React.FC<CartListPs> = ({ setTotal }) => {
               {calculateGSTAndTotal().GST / 2}
             </td>
           </tr>
+          {exchangeDiscount > 0 && (
+            <tr className="text-red-600">
+              <td
+                className="border border-gray-300 p-3 text-left"
+                align="right"
+                colSpan={5}
+              >
+                Less: Old Battery Exchange Discount:
+              </td>
+              <td colSpan={5} className="border border-gray-300 p-3 ">
+                - {exchangeDiscount}
+              </td>
+            </tr>
+          )}
           <tr className="font-bold">
             <td
               className="border border-gray-300 p-3 text-left"
               align="right"
               colSpan={5}
             >
-              TOTAL:
+              GRAND TOTAL:
             </td>
             <td colSpan={5} className="border border-gray-300 p-3 ">
-              {calculateGSTAndTotal().total}
+              {calculateGSTAndTotal().total - exchangeDiscount}
             </td>
           </tr>
         </tbody>
