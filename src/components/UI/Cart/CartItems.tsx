@@ -56,7 +56,8 @@ const CartItems: React.FC<Props> = ({ open, closeCartHandler, customerId }) => {
         const now = new Date();
         const dateStr = now.toLocaleDateString().replace(/\//g, "-");
         const timeStr = now.toLocaleTimeString().replace(/:/g, "-");
-        pdf.save(`${customer?.name ?? "Invoice"}_${dateStr}_${timeStr}.pdf`);
+        const customerName = customer ? `${customer.name}_${customer.last_name}` : "Invoice";
+        pdf.save(`${customerName}_${dateStr}_${timeStr}.pdf`);
       } catch (err) {
         console.error("Failed to generate PDF", err);
       }
