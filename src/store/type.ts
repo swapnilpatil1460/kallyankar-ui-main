@@ -259,6 +259,15 @@ export type Scrap = {
   customer?: string | Customer;
 };
 
+export type PaymentTransaction = {
+  _id?: string;
+  billing_id: string;
+  customer_id: string;
+  amount_paid: number;
+  payment_method: string;
+  createdAt?: string;
+};
+
 export type BillingWithMessage = {
   billingList: Billing[];
   message: string;

@@ -1,10 +1,10 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { updateBillingById } from "../../backend/billing";
+import { addPayment, getPaymentsByBillingId } from "../../backend/payment";
 import InvoiceHeading from "../../components/UI/Cart/InvoiceHeading";
 import Overlay from "../../components/UI/Overlay";
 import { useAnimation } from "../../hooks";
 import AppContext from "../../store/AppContext";
-import { Billing } from "../../store/type";
+import { Billing, PaymentTransaction, Customer } from "../../store/type";
 import SelectStatuRadio from "./SelectStatusRadio";
 
 type Props = {
@@ -17,6 +17,8 @@ const PayUnpaidAmount: React.FC<Props> = ({ data, show, setHide }) => {
   const { customer, unpaid_amount, _id } = data;
   const [status, setStatus] = useState("Paid");
   const [inputFieldAmount, setInputAmount] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("Cash");
+  const [paymentHistory, setPaymentHistory] = useState<PaymentTransaction[]>([]);
   const contentRef = useRef<HTMLDivElement>(null);
   const {
     state: { refreshEffect },
@@ -27,7 +29,20 @@ const PayUnpaidAmount: React.FC<Props> = ({ data, show, setHide }) => {
 
   useEffect(() => {
     setInputAmount(unpaid_amount.toString());
-  }, [unpaid_amount]);
+    const fetchHistory = async () => {
+      if (_id) {
+        try {
+          const history = await getPaymentsByBillingId(_id);
+          setPaymentHistory(history);
+        } catch (e) {
+          console.error("Failed to fetch payment history", e);
+        }
+      }
+    };
+    if (show) {
+      fetchHistory();
+    }
+  }, [unpaid_amount, _id, show]);
 
   const handleAmountValueChange = (
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
@@ -82,18 +97,33 @@ const PayUnpaidAmount: React.FC<Props> = ({ data, show, setHide }) => {
 
   const updateCustomerPayment = async () => {
     spinnerAnimationStart();
-    const pendingAmount = unpaid_amount - parseInt(inputFieldAmount);
-    const bill_status =
-      unpaid_amount - parseInt(inputFieldAmount) === 0 ? "Paid" : "Unpaid";
-    const body = { bill_status, unpaid_amount: pendingAmount };
-    await updateBillingById(body, _id ?? "");
     
-    await handleDirectDownload();
+    let custId = "";
+    if (typeof customer === "string") {
+      custId = customer;
+    } else if (customer && (customer as Customer)._id) {
+      custId = (customer as Customer)._id || "";
+    }
 
-    spinnerAnimationStop();
-    snackbarAnimation("Record Updated successfully! ", "success");
-    dispatch({ type: "REFRESH_EFFECT", payload: !refreshEffect });
-    hideModule();
+    try {
+      await addPayment({
+        billing_id: _id,
+        customer_id: custId,
+        amount_paid: parseInt(inputFieldAmount),
+        payment_method: paymentMethod
+      });
+      
+      await handleDirectDownload();
+
+      snackbarAnimation("Payment recorded successfully!", "success");
+      dispatch({ type: "REFRESH_EFFECT", payload: !refreshEffect });
+      hideModule();
+    } catch (error) {
+      console.error(error);
+      snackbarAnimation("Failed to record payment", "error");
+    } finally {
+      spinnerAnimationStop();
+    }
   };
   return (
     <Overlay open={show} handleClose={hideModule} widthSize="lg">
@@ -131,6 +161,37 @@ const PayUnpaidAmount: React.FC<Props> = ({ data, show, setHide }) => {
               </tbody>
             </table>
           </div>
+
+          {/* Payment History Khata */}
+          {paymentHistory.length > 0 && (
+            <div className="w-full mt-8">
+              <h3 className="text-sm font-bold text-gray-600 uppercase tracking-widest mb-3">Past Payments (Khata)</h3>
+              <table className="w-full border-collapse overflow-hidden border border-gray-200 rounded-md text-sm text-left">
+                <thead className="bg-gray-100">
+                  <tr className="text-gray-700">
+                    <th className="px-3 py-2 border-b">Date</th>
+                    <th className="px-3 py-2 border-b">Amount</th>
+                    <th className="px-3 py-2 border-b">Method</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {paymentHistory.map((txn, idx) => (
+                    <tr key={idx} className="bg-white text-gray-600">
+                      <td className="px-3 py-2 border-b border-gray-200">
+                        {new Date(txn.createdAt || "").toLocaleDateString()}
+                      </td>
+                      <td className="px-3 py-2 border-b border-gray-200 font-semibold text-green-600">
+                        ₹ {txn.amount_paid}
+                      </td>
+                      <td className="px-3 py-2 border-b border-gray-200">
+                        {txn.payment_method}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
       </div>
 
@@ -152,6 +213,23 @@ const PayUnpaidAmount: React.FC<Props> = ({ data, show, setHide }) => {
                 className="border border-gray-300 rounded-lg px-4 py-2 text-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 w-56"
               />
               <p className="text-xs text-gray-400">Max payable: ₹{unpaid_amount}</p>
+            </div>
+          )}
+          {status === "Unpaid" && (
+            <div className="flex flex-col gap-1 ml-2">
+              <label className="text-xs font-bold text-gray-500 uppercase tracking-widest">
+                Method
+              </label>
+              <select
+                value={paymentMethod}
+                onChange={(e) => setPaymentMethod(e.target.value)}
+                className="border border-gray-300 rounded-lg px-4 py-2 text-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 w-40"
+              >
+                <option value="Cash">Cash</option>
+                <option value="UPI">UPI</option>
+                <option value="Card">Card</option>
+                <option value="Cheque">Cheque</option>
+              </select>
             </div>
           )}
         </div>
