@@ -12,6 +12,7 @@ import CartItemsList from "./CartItemList";
 import useAnimation from "../../../hooks/useAnimation";
 import { toPng } from "html-to-image";
 import jsPDF from "jspdf";
+import { openWhatsApp } from "../../../utils/whatsapp.utils";
 
 interface Props {
   open: boolean;
@@ -66,7 +67,7 @@ const CartItems: React.FC<Props> = ({ open, closeCartHandler, customerId }) => {
     }
   };
 
-  const saveAsPDFHandler = async () => {
+  const saveAsPDFHandler = async (openWhatsAppChat = false) => {
     if (isSaving || storedCartItems.length === 0) return;
     setIsSaving(true);
     try {
@@ -74,10 +75,12 @@ const CartItems: React.FC<Props> = ({ open, closeCartHandler, customerId }) => {
         ? payment.total - parseInt(inputFieldAmount)
         : 0;
       amount = billStatus === "Paid" ? 0 : amount;
+      
+      const finalTotalAmount = payment.total - (exchangeBattery ? exchangeData.value : 0);
 
       await postCheckout(storedCartItems, {
         gst_amount: payment.gst,
-        total_amount: payment.total - (exchangeBattery ? exchangeData.value : 0),
+        total_amount: finalTotalAmount,
         unpaid_amount: amount,
         bill_status: billStatus,
         customerId,
@@ -91,6 +94,11 @@ const CartItems: React.FC<Props> = ({ open, closeCartHandler, customerId }) => {
       });
 
       await handleDirectDownload();
+
+      if (openWhatsAppChat && customer) {
+        const message = `Hello ${customer.name}, thank you for purchasing from Kalyankar Batteries! Your total bill is ₹${finalTotalAmount}. ${amount > 0 ? `Pending Amount: ₹${amount}.` : `Paid in full.`}`;
+        openWhatsApp(customer.contact, message);
+      }
 
       dispatch({ type: "ADD_STORED_CART_ITEMS", payload: [] });
       dispatch({ type: "REFRESH_EFFECT", payload: !refreshEffect });
@@ -213,7 +221,7 @@ const CartItems: React.FC<Props> = ({ open, closeCartHandler, customerId }) => {
               <div className="mt-4 flex space-x-2 px-4 pb-6">
                 <button
                   className="flex w-full items-center justify-center space-x-1 rounded-md border border-blue-500 py-2 text-sm text-blue-500 shadow-sm hover:bg-blue-500 hover:text-white"
-                  onClick={saveAsPDFHandler}
+                  onClick={() => saveAsPDFHandler(false)}
                   disabled={isSaving || storedCartItems.length === 0}
                 >
                   <svg
@@ -231,6 +239,16 @@ const CartItems: React.FC<Props> = ({ open, closeCartHandler, customerId }) => {
                     />
                   </svg>
                   <span>{isSaving ? "Saving..." : "Save & Download"}</span>
+                </button>
+                <button
+                  className="flex w-full items-center justify-center space-x-1 rounded-md border border-green-500 py-2 text-sm text-green-500 shadow-sm hover:bg-green-500 hover:text-white ml-2"
+                  onClick={() => saveAsPDFHandler(true)}
+                  disabled={isSaving || storedCartItems.length === 0}
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                  </svg>
+                  <span>{isSaving ? "Saving..." : "Save & WhatsApp"}</span>
                 </button>
               </div>
               <div className="flex justify-end items-center">

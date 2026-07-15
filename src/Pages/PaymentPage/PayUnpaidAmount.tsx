@@ -6,6 +6,7 @@ import { useAnimation } from "../../hooks";
 import AppContext from "../../store/AppContext";
 import { Billing, PaymentTransaction, Customer } from "../../store/type";
 import SelectStatuRadio from "./SelectStatusRadio";
+import { openWhatsApp } from "../../utils/whatsapp.utils";
 
 type Props = {
   data: Billing;
@@ -95,15 +96,21 @@ const PayUnpaidAmount: React.FC<Props> = ({ data, show, setHide }) => {
     }
   };
 
-  const updateCustomerPayment = async () => {
+  const updateCustomerPayment = async (openWhatsAppChat = false) => {
     spinnerAnimationStart();
     
     let custId = "";
+    let custName = "Customer";
+    let custPhone = "";
     if (typeof customer === "string") {
       custId = customer;
-    } else if (customer && (customer as Customer)._id) {
+    } else if (customer) {
       custId = (customer as Customer)._id || "";
+      custName = (customer as Customer).name || "Customer";
+      custPhone = (customer as Customer).contact || "";
     }
+
+    const pendingAmount = unpaid_amount - parseInt(inputFieldAmount);
 
     try {
       await addPayment({
@@ -114,6 +121,11 @@ const PayUnpaidAmount: React.FC<Props> = ({ data, show, setHide }) => {
       });
       
       await handleDirectDownload();
+
+      if (openWhatsAppChat && custPhone) {
+        const message = `Hello ${custName}, we received your payment of ₹${inputFieldAmount} at Kalyankar Batteries. ${pendingAmount > 0 ? `Your remaining balance is ₹${pendingAmount}.` : `Your bill is now fully paid. Thank you!`}`;
+        openWhatsApp(custPhone, message);
+      }
 
       snackbarAnimation("Payment recorded successfully!", "success");
       dispatch({ type: "REFRESH_EFFECT", payload: !refreshEffect });
@@ -238,10 +250,19 @@ const PayUnpaidAmount: React.FC<Props> = ({ data, show, setHide }) => {
       {/* Action Buttons */}
       <div className="px-8 py-4 bg-gray-50 border-t border-gray-200 flex justify-end gap-4">
         <button
-          onClick={updateCustomerPayment}
+          onClick={() => updateCustomerPayment(false)}
           className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-lg shadow transition-all"
         >
           Save & Print
+        </button>
+        <button
+          onClick={() => updateCustomerPayment(true)}
+          className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg shadow transition-all flex items-center gap-2"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+          </svg>
+          Save & WhatsApp
         </button>
         <button
           onClick={hideModule}
