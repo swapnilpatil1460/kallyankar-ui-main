@@ -30,7 +30,7 @@ const deleteStockItemById = async (id: string) => {
   return data;
 };
 const getStockItemList = async () => {
-  const { data } = await api.get<StockItems[]>("stock-item/list");
+  const { data } = await api.get<StockItems[]>("stock-item/stock-items");
   return data;
 };
 
@@ -48,3 +48,4 @@ export {
   getStockItemList,
   getStockItemBystockId,
 };
+
