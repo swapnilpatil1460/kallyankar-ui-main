@@ -143,8 +143,8 @@ const PayUnpaidAmount: React.FC<Props> = ({ data, show, setHide }) => {
       <div className="p-8 bg-gray-100 w-full" id="print" ref={contentRef}>
         <div className="max-w-4xl mx-auto bg-white p-6 shadow-md rounded-md">
           <InvoiceHeading customer={customer} />
-          <div className="w-full mt-8">
-            <table className="w-full border-collapse overflow-hidden shadow-md rounded-md text-sm text-left">
+          <div className="w-full mt-8 overflow-x-auto">
+            <table className="w-full min-w-[500px] border-collapse overflow-hidden shadow-md rounded-md text-sm text-left">
               <thead>
                 <tr className="bg-slate-700 text-white">
                   <th className="px-3 py-2">Total Amount</th>
@@ -176,9 +176,9 @@ const PayUnpaidAmount: React.FC<Props> = ({ data, show, setHide }) => {
 
           {/* Payment History Khata */}
           {paymentHistory.length > 0 && (
-            <div className="w-full mt-8">
+            <div className="w-full mt-8 overflow-x-auto">
               <h3 className="text-sm font-bold text-gray-600 uppercase tracking-widest mb-3">Past Payments (Khata)</h3>
-              <table className="w-full border-collapse overflow-hidden border border-gray-200 rounded-md text-sm text-left">
+              <table className="w-full min-w-[400px] border-collapse overflow-hidden border border-gray-200 rounded-md text-sm text-left">
                 <thead className="bg-gray-100">
                   <tr className="text-gray-700">
                     <th className="px-3 py-2 border-b">Date</th>
@@ -248,7 +248,7 @@ const PayUnpaidAmount: React.FC<Props> = ({ data, show, setHide }) => {
       </div>
 
       {/* Action Buttons */}
-      <div className="px-8 py-4 bg-gray-50 border-t border-gray-200 flex justify-end gap-4">
+      <div className="px-4 sm:px-8 py-4 bg-gray-50 border-t border-gray-200 flex flex-col sm:flex-row justify-end gap-4">
         <button
           onClick={() => updateCustomerPayment(false)}
           className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-lg shadow transition-all"

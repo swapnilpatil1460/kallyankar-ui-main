@@ -33,7 +33,7 @@ const FlowTable: React.FC<ProductTableProps> = ({ data }) => {
   };
   const showNothing = !isLoading && data.length === 0;
   return (
-    <div className="w-full overflow-hidden shadow-md rounded-md">
+    <div className="w-full overflow-x-auto shadow-md rounded-md">
       {showNothing ? (
         <Nothing
           heading="No Record"

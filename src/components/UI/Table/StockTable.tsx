@@ -36,7 +36,7 @@ const StockTable: React.FC<CustomerTableProps> = ({ data }) => {
   const showNothing = !isLoading && data.length === 0;
   return (
     <>
-      <div className="relative   p-10">
+      <div className="relative p-4 md:p-10 overflow-x-auto">
         {showNothing ? (
           <Nothing
             heading="No Record"

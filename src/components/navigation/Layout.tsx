@@ -10,6 +10,7 @@ import useAuthContext from "../../auth-store/useAuthContext";
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { pathname } = useLocation();
   const { state } = useAuthContext();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const isLandingScreen = pathname === "/";
   const { isAuthenticated } = state;
   const shouldShowSidebar = !isLandingScreen && isAuthenticated;
@@ -18,16 +19,14 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     <div className="flex min-h-screen bg-theme-bg">
       {/* Sidebar - Fixed Left */}
       {shouldShowSidebar && (
-        <div className="hidden md:block">
-          <SideNav />
-        </div>
+        <SideNav isOpen={isMobileMenuOpen} setIsOpen={setIsMobileMenuOpen} />
       )}
       
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0">
-        {shouldShowSidebar && <TopHeader />}
+        {shouldShowSidebar && <TopHeader onMenuClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} />}
         
-        <main className="flex-1 w-full max-w-7xl mx-auto p-6 md:p-10">
+        <main className="flex-1 w-full max-w-7xl mx-auto p-4 sm:p-6 md:p-10">
           {children}
         </main>
 

@@ -25,7 +25,7 @@ const UserTable: React.FC<Props> = ({ users }) => {
     }
   };
   return (
-    <div className="">
+    <div className="w-full overflow-x-auto shadow-md rounded-md">
       <table className="table-auto w-full bg-white shadow-lg rounded-lg overflow-hidden font-sans">
         <thead className="bg-indigo-600 text-white ">
           <tr>

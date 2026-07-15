@@ -196,7 +196,7 @@ const CartItems: React.FC<Props> = ({ open, closeCartHandler, customerId }) => {
                   <label htmlFor="exchange" className="text-sm font-medium">Exchange Old Battery?</label>
                 </div>
                 {exchangeBattery && (
-                  <div className="flex space-x-2 mb-4 bg-gray-50 p-3 rounded-md">
+                  <div className="flex flex-col space-y-4 md:flex-row md:space-x-2 md:space-y-0 mb-4 bg-gray-50 p-3 rounded-md">
                     <TextField label="Old Battery Name" size="small" value={exchangeData.name} onChange={(e) => setExchangeData({ ...exchangeData, name: e.target.value })} />
                     <TextField label="Ampere Size" size="small" value={exchangeData.type} onChange={(e) => setExchangeData({ ...exchangeData, type: e.target.value })} />
                     <TextField label="Exchange Value (₹)" type="number" size="small" value={exchangeData.value === 0 ? "" : exchangeData.value} onChange={(e) => setExchangeData({ ...exchangeData, value: parseInt(e.target.value) || 0 })} />

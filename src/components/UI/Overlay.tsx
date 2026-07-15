@@ -36,6 +36,7 @@ const Overlay: React.FC<Props> = ({
       onClose={() => handleClose()}
       aria-describedby="alert-dialog-slide-description"
       maxWidth={widthSize}
+      fullWidth={true}
       PaperProps={{
         style: {
           backgroundColor: '#ffffff',

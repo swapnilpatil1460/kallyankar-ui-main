@@ -35,7 +35,7 @@ const CustomerTable: React.FC<CustomerTableProps> = ({ data }) => {
   };
   const showNothing = !isLoading && data.length === 0;
   return (
-    <div className="w-full overflow-hidden shadow-md rounded-md mt-5">
+    <div className="w-full overflow-x-auto shadow-md rounded-md mt-5">
       {showNothing ? (
         <Nothing
           heading="No Record"

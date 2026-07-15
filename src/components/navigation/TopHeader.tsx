@@ -3,7 +3,11 @@ import useSessionManagement from "../../hooks/useSessionManagement";
 import { useState, useRef, useEffect } from "react";
 import useAuthContext from "../../auth-store/useAuthContext";
 
-const TopHeader = () => {
+interface TopHeaderProps {
+  onMenuClick?: () => void;
+}
+
+const TopHeader: React.FC<TopHeaderProps> = ({ onMenuClick }) => {
   const { handleUserLogout } = useSessionManagement();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const { state: { user } } = useAuthContext();
@@ -21,14 +25,15 @@ const TopHeader = () => {
   }, []);
 
   return (
-    <header className="w-full bg-white border-b border-theme-c3 z-40 sticky top-0 h-20 flex items-center justify-end px-8">
-      {/* Right side - Profile Dropdown */}
-      <div className="flex items-center gap-6">
-        
-        {/* Mobile menu toggle (if needed later) */}
-        <button className="md:hidden text-slate-500 hover:text-theme-c1 transition-colors">
+    <header className="w-full bg-white border-b border-theme-c3 z-40 sticky top-0 h-20 flex items-center justify-end px-4 sm:px-8">
+      <div className="flex-1 flex md:hidden">
+        <button onClick={onMenuClick} className="text-slate-500 hover:text-theme-c1 transition-colors p-2">
           <Menu size={24} />
         </button>
+      </div>
+
+      {/* Right side - Profile Dropdown */}
+      <div className="flex items-center gap-6">
 
         <div className="relative" ref={dropdownRef}>
           <button
