@@ -1,7 +1,7 @@
 import axios, { AxiosInstance, AxiosResponse, AxiosError } from "axios";
 
 const baseURL =
-  import.meta.env.VITE_API_BASE_URL ?? "https://kallyankar-api-service.onrender.com/";
+  import.meta.env.VITE_API_BASE_URL ?? "https://kalyankar-battery.vercel.app/";
 // Create Axios instance with base URL
 const api: AxiosInstance = axios.create({
   baseURL: baseURL,
