@@ -39,7 +39,7 @@ const getCustomerByBillingStatus = async (status: string) => {
 };
 const getCustomerList = async (p: any) => {
   const { refreshEffect, ...params } = p;
-  const { data } = await api.get<CustomerPagination>("customer/customer-all", {
+  const { data } = await api.get<CustomerPagination>("customer", {
     params,
   });
   return data;
