@@ -32,7 +32,7 @@ const CartItems: React.FC<Props> = ({ open, closeCartHandler, customerId }) => {
 
   const handlePrint = useReactToPrint({
     contentRef: contentRef,
-    documentTitle: `${customer?.name ?? "Invoice"} ${new Date().toLocaleDateString()}`,
+    documentTitle: `${customer?.name ?? "Invoice"}_${new Date().toLocaleDateString().replace(/\//g, "-")}`,
   });
 
   const handleAmountValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
