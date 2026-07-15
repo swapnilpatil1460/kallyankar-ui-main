@@ -55,12 +55,6 @@ const BillingStatusTable: React.FC<{ data: Billing[]; status: string }> = ({
                   {row.customer?.contact}
                 </td>
                 <td className="px-6 py-3 text-left text-xs   tracking-wider">
-                  {row.customer?.email}
-                </td>
-                <td className="px-6 py-3 text-left text-xs   tracking-wider">
-                  {row.customer?.address}
-                </td>
-                <td className="px-6 py-3 text-left text-xs   tracking-wider">
                   {row.gst_amount}
                 </td>
                 <td className="px-6 py-3 text-left text-xs   tracking-wider">

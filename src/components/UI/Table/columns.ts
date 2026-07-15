@@ -40,8 +40,6 @@ const STOCK_TABLE_COLUMN = [
 const BILLING_STATUS_COLUMN = [
   "Name",
   "Contact",
-  "Email",
-  "Address",
   "GST",
   "Total",
   "Unpaid",
