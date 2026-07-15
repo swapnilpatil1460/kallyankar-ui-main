@@ -36,11 +36,20 @@ const Overlay: React.FC<Props> = ({
       onClose={() => handleClose()}
       aria-describedby="alert-dialog-slide-description"
       maxWidth={widthSize}
+      PaperProps={{
+        style: {
+          backgroundColor: '#ffffff',
+          color: '#1e293b',
+          borderRadius: '1rem',
+          border: '1px solid #e5e7eb',
+          boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)'
+        }
+      }}
     >
       {children}
       {showButton && (
         <DialogActions>
-          <Button onClick={() => handleClose()}>cLOSE</Button>
+          <Button onClick={() => handleClose()} sx={{ color: '#cc0000', fontWeight: 'bold' }}>CLOSE</Button>
         </DialogActions>
       )}
     </Dialog>

@@ -27,7 +27,7 @@ const UserTable: React.FC<Props> = ({ users }) => {
   return (
     <div className="">
       <table className="table-auto w-full bg-white shadow-lg rounded-lg overflow-hidden font-sans">
-        <thead className="bg-indigo-600 text-white">
+        <thead className="bg-indigo-600 text-gray-700">
           <tr>
             <th
               scope="col"
@@ -67,7 +67,7 @@ const UserTable: React.FC<Props> = ({ users }) => {
             </th>
           </tr>
         </thead>
-        <tbody className="bg-white divide-y divide-gray-200">
+        <tbody className="bg-white divide-y divide-theme-c3">
           {users.map((element, index) => (
             <tr
               key={index}

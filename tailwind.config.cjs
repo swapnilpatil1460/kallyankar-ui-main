@@ -17,9 +17,9 @@ module.exports = {
       colors: {
         "theme-c1": "#cc0000", // Amaron Red
         "theme-c1-b": "#a30000", // Darker Red for hover
-        "theme-c2": "#1e1e1e", // Mid-level black for cards
-        "theme-c3": "#2d2d2d", // Borders/Hover states
-        "theme-bg": "#121212", // Mid-level black background
+        "theme-c2": "#ffffff", // White for cards/forms
+        "theme-c3": "#e5e7eb", // Soft border gray
+        "theme-bg": "#f3f4f6", // Light gray background
       },
     },
   },

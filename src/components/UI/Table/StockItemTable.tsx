@@ -23,7 +23,7 @@ const StockItemTable: React.FC<Props> = ({ data, udpateStockItem }) => {
         />
       ) : (
         <table className="table-auto w-full bg-white shadow-lg rounded-lg overflow-hidden font-sans">
-          <thead className="bg-indigo-600 text-white">
+          <thead className="bg-indigo-600 text-gray-700">
             <tr>
               <th
                 scope="col"
@@ -49,7 +49,7 @@ const StockItemTable: React.FC<Props> = ({ data, udpateStockItem }) => {
             {data.map((row: StockItems, index: any) => (
               <tr
                 key={index}
-                className="bg-white border-b text-sm text-slate-700 font-normal hover:bg-gray-50 "
+                className="bg-white border-b text-sm text-gray-700 font-normal hover:bg-gray-50 "
               >
                 <td className="px-6 py-3 text-left text-xs  uppercase tracking-wider">
                   {row.quantity}

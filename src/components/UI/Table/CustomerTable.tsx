@@ -43,7 +43,7 @@ const CustomerTable: React.FC<CustomerTableProps> = ({ data }) => {
         />
       ) : (
         <table className="table-auto w-full bg-white shadow-lg rounded-lg overflow-hidden font-sans">
-          <thead className="bg-indigo-600 text-white">
+          <thead className="bg-indigo-600 text-gray-700">
             <tr>
               {CUSTOMER_TABLE_COLUMN.map((col, index) => (
                 <th
@@ -55,39 +55,39 @@ const CustomerTable: React.FC<CustomerTableProps> = ({ data }) => {
               ))}
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
+          <tbody className="bg-white divide-y divide-theme-c3">
             {data.map((row: Customer, index: number) => (
               <tr
                 key={index}
-                className="hover:bg-gray-100 transition-colors duration-200 dark:bg-gray-800 dark:hover:bg-gray-700"
+                className="hover:bg-gray-50 transition-colors duration-200 dark:bg-gray-800 dark:hover:bg-gray-700"
               >
                 <td className="px-6 py-4 whitespace-nowrap">
                   <Link
                     to={`/admin/customers/${row._id}`}
-                    className="text-sm font-medium text-indigo-600 hover:underline dark:text-indigo-400"
+                    className="text-sm font-medium text-theme-c1 hover:underline dark:text-indigo-400"
                   >
                     {row.name + " " + row.last_name}
                   </Link>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-700">
                   {row.address}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-700">
                   {row.email}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-700">
                   {row.contact}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-700">
                   {row.gst_number}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-gray-700">
                   {dateFormater(row.createdAt ?? "")}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <button
                     onClick={() => editCustomerHandler(row._id ?? "")}
-                    className="text-indigo-600 hover:underline dark:text-indigo-400"
+                    className="text-theme-c1 hover:underline dark:text-indigo-400"
                   >
                     <Edit />
                   </button>

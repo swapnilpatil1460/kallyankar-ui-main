@@ -21,7 +21,7 @@ const UsersTable = () => {
         {_DATA.currentData().map((element, index) => (
           <tr
             key={index}
-            className="bg-white border-b text-sm text-slate-700 font-base hover:bg-gray-50"
+            className="bg-white border-b text-sm text-gray-700 font-base hover:bg-gray-50"
           >
             <td className="px-3 py-4">{element.name}</td>
             <td className="px-3 py-4">{element.c_name}</td>
@@ -32,7 +32,7 @@ const UsersTable = () => {
           </tr>
         ))}
       </Table>
-      <div className="flex justify-center items-center my-5 py-2 bg-white text-white">
+      <div className="flex justify-center items-center my-5 py-2 bg-white text-gray-700">
         <Pagination
           count={count}
           size="large"

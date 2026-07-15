@@ -41,7 +41,7 @@ const FlowTable: React.FC<ProductTableProps> = ({ data }) => {
         />
       ) : (
         <table className="table-auto w-full bg-white shadow-lg rounded-lg overflow-hidden font-sans">
-          <thead className="bg-indigo-600 text-white">
+          <thead className="bg-indigo-600 text-gray-700">
             <tr>
               {BATTERY_TABLE_COLUMN.map((col, index) => (
                 <th
@@ -54,7 +54,7 @@ const FlowTable: React.FC<ProductTableProps> = ({ data }) => {
               <th className="px-4 py-2"></th> {/* Empty header for actions */}
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200 text-sm">
+          <tbody className="bg-white divide-y divide-theme-c3 text-sm">
             {data.map((row: Product, index: number) => (
               <tr key={index}>
                 <td className="px-6 py-3 text-left text-xs  uppercase tracking-wider">

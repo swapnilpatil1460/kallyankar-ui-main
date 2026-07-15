@@ -9,10 +9,10 @@ const ButtonSave: React.FC<ButtonSaveProps> = ({
   type = "submit",
 }) => {
   return (
-    <div className="w-full">
+    <div className="w-full pt-4">
       <button
         type={type}
-        className="px-10 py-2 my-0 font-bold tracking-widest uppercase border-2 border-black hover:bg-black  hover:text-white w-full"
+        className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-bold uppercase tracking-widest text-white bg-theme-c1 hover:bg-theme-c1-b focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-c1 focus:ring-offset-theme-bg transition-colors"
       >
         {title}
       </button>

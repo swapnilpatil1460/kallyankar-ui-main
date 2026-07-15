@@ -3,7 +3,7 @@ import { KalyankarLogo } from "../assets/images";
 
 const LoginPage = () => {
   return (
-    <section className="min-h-screen w-full bg-theme-bg flex items-center justify-center p-4">
+    <section className="min-h-screen w-full flex items-center justify-center p-4" style={{ background: '#0a0a0a' }}>
       <div className="w-full max-w-md">
         
         {/* Brand Header */}
@@ -12,13 +12,13 @@ const LoginPage = () => {
             <img src={KalyankarLogo} alt="Kalyankar Batteries" className="h-20 w-20 rounded-xl object-contain" />
           </span>
           <h1 className="text-3xl font-bold text-white tracking-widest uppercase mb-2">
-            Kalyankar <span className="text-theme-c1">Batteries</span>
+            Kalyankar <span className="text-red-600">Batteries</span>
           </h1>
           <p className="text-gray-400 text-sm">Sign in to access your dashboard</p>
         </div>
 
         {/* Authentication Card */}
-        <div className="bg-theme-c2 rounded-xl shadow-2xl border border-theme-c3 p-8">
+        <div className="rounded-xl shadow-2xl p-8" style={{ background: '#1a1a1a', border: '1px solid #2a2a2a' }}>
           <LoginForm />
         </div>
         
@@ -32,3 +32,4 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
+

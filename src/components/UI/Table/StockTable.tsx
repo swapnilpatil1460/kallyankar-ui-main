@@ -44,7 +44,7 @@ const StockTable: React.FC<CustomerTableProps> = ({ data }) => {
           />
         ) : (
           <table className="table-auto w-full bg-white shadow-lg rounded-lg overflow-hidden font-sans">
-            <thead className="bg-indigo-600 text-white">
+            <thead className="bg-indigo-600 text-gray-700">
               <tr>
                 <th
                   scope="col"
@@ -88,12 +88,12 @@ const StockTable: React.FC<CustomerTableProps> = ({ data }) => {
               {data.map((row: STOCK, index: number) => (
                 <tr
                   key={index}
-                  className="bg-white border-b text-sm text-slate-700 font-normal hover:bg-gray-50 "
+                  className="bg-white border-b text-sm text-gray-700 font-normal hover:bg-gray-50 "
                 >
                   <td className="px-6 py-3 text-left text-xs  uppercase tracking-wider">
                     <Link
                       to={`/admin/stocks/${row._id}`}
-                      className="text-sm font-medium text-indigo-600 hover:underline dark:text-indigo-400"
+                      className="text-sm font-medium text-theme-c1 hover:underline dark:text-indigo-400"
                     >
                       {row.product_code}
                     </Link>

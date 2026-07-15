@@ -184,7 +184,7 @@ const ProductForm: React.FC = () => {
                 Qty
               </label>
               <input
-                className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                className="w-full px-3 py-2 mb-3 text-sm leading-tight border-theme-c3 rounded-lg bg-white text-gray-700 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-theme-c1 focus:border-theme-c1"
                 id="quantity"
                 type="number"
                 placeholder="Quantity"
@@ -202,7 +202,7 @@ const ProductForm: React.FC = () => {
               </label>
               <div className="flex">
                 <input
-                  className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                  className="w-full px-3 py-2 mb-3 text-sm leading-tight border-theme-c3 rounded-lg bg-white text-gray-700 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-theme-c1 focus:border-theme-c1"
                   id="serial_number"
                   type="text"
                   placeholder="Serial Number"
@@ -215,7 +215,7 @@ const ProductForm: React.FC = () => {
                     disabled={quantity == serial_numbers?.length}
                     type="button"
                     onClick={handleSerialNumbers}
-                    className="bg-slate-500 hover:bg-slate-600 text-white font-bold py-2 px-4 rounded-r-md shadow-lg transition-all animate-fadeInUp text-sm"
+                    className="bg-slate-500 hover:bg-slate-600 text-gray-700 font-bold py-2 px-4 rounded-r-md shadow-lg transition-all animate-fadeInUp text-sm"
                   >
                     +{" "}
                   </button>
@@ -234,7 +234,7 @@ const ProductForm: React.FC = () => {
                 Price
               </label>
               <input
-                className="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                className="w-full px-3 py-2 text-sm leading-tight border-theme-c3 rounded-lg bg-white text-gray-700 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-theme-c1 focus:border-theme-c1"
                 id="v_number"
                 type="number"
                 placeholder="Price"
@@ -254,7 +254,7 @@ const ProductForm: React.FC = () => {
                 Vehicle Name
               </label>
               <input
-                className="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                className="w-full px-3 py-2 text-sm leading-tight border-theme-c3 rounded-lg bg-white text-gray-700 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-theme-c1 focus:border-theme-c1"
                 id="vehicle_name"
                 type="text"
                 name="vehicle_name"
@@ -271,7 +271,7 @@ const ProductForm: React.FC = () => {
                 Vehicle Number
               </label>
               <input
-                className="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                className="w-full px-3 py-2 text-sm leading-tight border-theme-c3 rounded-lg bg-white text-gray-700 placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-theme-c1 focus:border-theme-c1"
                 id="v_number"
                 type="text"
                 name="vehicle_number"

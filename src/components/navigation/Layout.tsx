@@ -1,6 +1,7 @@
 // ShoppingLayout.js
 import React, { useContext, useEffect, useState } from "react";
 import TopHeader from "./TopHeader";
+import SideNav from "./SideNav";
 import Footer from "../UI/Footer";
 
 import { useLocation } from "react-router-dom";
@@ -14,14 +15,24 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const shouldShowSidebar = !isLandingScreen && isAuthenticated;
 
   return (
-    <div className="flex flex-col min-h-screen bg-theme-bg">
-      {shouldShowSidebar && <TopHeader />}
+    <div className="flex min-h-screen bg-theme-bg">
+      {/* Sidebar - Fixed Left */}
+      {shouldShowSidebar && (
+        <div className="hidden md:block">
+          <SideNav />
+        </div>
+      )}
       
-      <main className="flex-grow w-full max-w-7xl mx-auto p-4 md:p-6">
-        {children}
-      </main>
+      {/* Main Content Area */}
+      <div className="flex-1 flex flex-col min-w-0">
+        {shouldShowSidebar && <TopHeader />}
+        
+        <main className="flex-1 w-full max-w-7xl mx-auto p-6 md:p-10">
+          {children}
+        </main>
 
-      {shouldShowSidebar && <Footer />}
+        {shouldShowSidebar && <Footer />}
+      </div>
     </div>
   );
 };

@@ -60,7 +60,7 @@ const LoginForm = () => {
       
       {/* Email Input */}
       <div>
-        <label className="block text-sm font-medium text-gray-300 mb-2" htmlFor="email">
+        <label className="block text-sm font-medium text-gray-200 mb-2" htmlFor="email">
           Email Address
         </label>
         <div className="relative">
@@ -68,7 +68,7 @@ const LoginForm = () => {
             <Mail className="h-5 w-5 text-gray-500" />
           </div>
           <input
-            className="block w-full pl-10 pr-3 py-3 border border-theme-c3 rounded-lg leading-5 bg-theme-bg text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-theme-c1 focus:border-theme-c1 transition-colors sm:text-sm"
+            className="block w-full pl-10 pr-3 py-3 border border-white/20 rounded-lg leading-5 bg-black/40 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-theme-c1 focus:border-theme-c1 transition-colors sm:text-sm"
             name="email"
             id="email"
             type="email"
@@ -82,7 +82,7 @@ const LoginForm = () => {
 
       {/* Password Input */}
       <div>
-        <label className="block text-sm font-medium text-gray-300 mb-2" htmlFor="password">
+        <label className="block text-sm font-medium text-gray-200 mb-2" htmlFor="password">
           Password
         </label>
         <div className="relative">
@@ -90,7 +90,7 @@ const LoginForm = () => {
             <Lock className="h-5 w-5 text-gray-500" />
           </div>
           <input
-            className="block w-full pl-10 pr-3 py-3 border border-theme-c3 rounded-lg leading-5 bg-theme-bg text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-theme-c1 focus:border-theme-c1 transition-colors sm:text-sm"
+            className="block w-full pl-10 pr-3 py-3 border border-white/20 rounded-lg leading-5 bg-black/40 text-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-theme-c1 focus:border-theme-c1 transition-colors sm:text-sm"
             name="password"
             id="password"
             type="password"

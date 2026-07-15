@@ -33,7 +33,7 @@ const BillingStatusTable: React.FC<{ data: Billing[]; status: string }> = ({
         />
       ) : (
         <table className="table-auto w-full bg-white shadow-lg rounded-lg overflow-hidden font-sans">
-          <thead className="bg-indigo-600 text-white">
+          <thead className="bg-indigo-600 text-gray-700">
             <tr>
               {BILLING_STATUS_COLUMN.map((col, index) => (
                 <th
@@ -46,7 +46,7 @@ const BillingStatusTable: React.FC<{ data: Billing[]; status: string }> = ({
               <th className="px-4 py-2"></th> {/* Empty header for actions */}
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
+          <tbody className="bg-white divide-y divide-theme-c3">
             {data.map((row: Billing, index: number) => (
               <tr key={index}>
                 <td className="px-6 py-3 text-left text-xs   tracking-wider">
