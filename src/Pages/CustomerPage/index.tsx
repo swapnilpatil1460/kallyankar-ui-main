@@ -1,7 +1,7 @@
 import CustomerTable from "../../components/UI/Table/CustomerTable";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { customer } from "../../store/type";
+import { customer, Customer } from "../../store/type";
 
 import useAppContext from "../../hooks/useAppContext";
 import { useApiCall } from "../../hooks";
@@ -22,15 +22,37 @@ const CustomerPage = () => {
   const params = useMemo(() => {
     return {
       refreshEffect,
-      page: currentPage,
-      limit,
-      search: searchTerm,
-      sortBy: "updatedAt",
-      sortOrder: "desc",
     };
-  }, [currentPage, limit, searchTerm, refreshEffect]);
+  }, [refreshEffect]);
 
   const { data } = useApiCall(getCustomerList, params);
+
+  // Handle backend returning either array or paginated object
+  const allCustomers = useMemo<Customer[]>(() => {
+    if (!data) return [];
+    if (Array.isArray(data)) return data as Customer[];
+    if ((data as any).customers && Array.isArray((data as any).customers)) return (data as any).customers;
+    return [];
+  }, [data]);
+
+  // Client-side search filtering
+  const filteredCustomers = useMemo(() => {
+    if (!searchTerm) return allCustomers;
+    const lower = searchTerm.toLowerCase();
+    return allCustomers.filter(c => 
+      c.name?.toLowerCase().includes(lower) || 
+      c.contact?.toString().includes(lower) ||
+      c.last_name?.toLowerCase().includes(lower) ||
+      c.email?.toLowerCase().includes(lower)
+    );
+  }, [allCustomers, searchTerm]);
+
+  // Client-side pagination
+  const totalPages = Math.ceil(filteredCustomers.length / limit) || 1;
+  const paginatedCustomers = useMemo(() => {
+    const start = (currentPage - 1) * limit;
+    return filteredCustomers.slice(start, start + limit);
+  }, [filteredCustomers, currentPage, limit]);
 
   const handleSearchInputChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -97,11 +119,11 @@ const CustomerPage = () => {
       </div>
 
       <div className="p-6 bg-white  rounded-lg mt-6 animate-fadeIn">
-        {data?.customers && <CustomerTable data={data?.customers} />}
-        {data && (
+        <CustomerTable data={paginatedCustomers} />
+        {totalPages > 1 && (
           <Pagination
             currentPage={currentPage}
-            totalPages={data.totalPages}
+            totalPages={totalPages}
             handlePageChange={handlePageChange}
           />
         )}
