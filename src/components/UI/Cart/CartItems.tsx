@@ -110,8 +110,8 @@ const CartItems: React.FC<Props> = ({ open, closeCartHandler, customerId }) => {
             leaveTo="opacity-0 scale-95"
           >
             <div className="my-8 inline-block w-full max-w-3xl transform overflow-hidden rounded-lg bg-white text-left align-middle shadow-xl transition-all">
-              <div className="p-0 sm:p-2" id="print" ref={contentRef}>
-                <div className="border-2 border-black p-0 sm:p-4 bg-white text-black">
+              <div className="p-2" id="print" ref={contentRef}>
+                <div className="border-2 border-gray-600 p-2">
                   {customer && <InvoiceHeading customer={customer} />}
                   <div className="flex w-full justify-center items-center">
                     <CartItemsList setTotal={setTotalAmount} />
