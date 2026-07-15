@@ -1,13 +1,8 @@
-import TextField from "@mui/material/TextField";
-
 import { useContext, useEffect, useRef, useState } from "react";
 import { updateBillingById } from "../../backend/billing";
-import ButtonClick from "../../components/UI/Button/ButtonClick";
-import ButtonHeader from "../../components/UI/Button/ButtonHeader";
 import InvoiceHeading from "../../components/UI/Cart/InvoiceHeading";
 import Overlay from "../../components/UI/Overlay";
 import { useAnimation } from "../../hooks";
-import usePdfDownloader from "../../hooks/usePdfDownloader";
 import AppContext from "../../store/AppContext";
 import { Billing } from "../../store/type";
 import SelectStatuRadio from "./SelectStatusRadio";
@@ -102,13 +97,14 @@ const PayUnpaidAmount: React.FC<Props> = ({ data, show, setHide }) => {
   };
   return (
     <Overlay open={show} handleClose={hideModule} widthSize="lg">
+      {/* Printable Invoice Section */}
       <div className="p-8 bg-gray-100 w-full" id="print" ref={contentRef}>
         <div className="max-w-4xl mx-auto bg-white p-6 shadow-md rounded-md">
           <InvoiceHeading customer={customer} />
           <div className="w-full mt-8">
             <table className="w-full border-collapse overflow-hidden shadow-md rounded-md text-sm text-left">
               <thead>
-                <tr className="bg-slate-500 text-white">
+                <tr className="bg-slate-700 text-white">
                   <th className="px-3 py-2">Total Amount</th>
                   <th className="px-3 py-2">Paid Amount</th>
                   <th className="px-3 py-2">Date</th>
@@ -117,17 +113,17 @@ const PayUnpaidAmount: React.FC<Props> = ({ data, show, setHide }) => {
               </thead>
               <tbody>
                 <tr className="bg-white text-gray-800">
-                  <td className="px-3 py-2 border border-gray-300">
-                    {unpaid_amount}
+                  <td className="px-3 py-2 border border-gray-300 font-semibold">
+                    ₹ {unpaid_amount}
                   </td>
-                  <td className="px-3 py-2 border border-gray-300">
-                    {inputFieldAmount === "" ? "0" : inputFieldAmount}
+                  <td className="px-3 py-2 border border-gray-300 font-semibold text-green-700">
+                    ₹ {inputFieldAmount === "" ? "0" : inputFieldAmount}
                   </td>
                   <td className="px-3 py-2 border border-gray-300">
                     {new Date().toJSON().slice(0, 10)}
                   </td>
-                  <td className="px-3 py-2 border border-gray-300">
-                    {inputFieldAmount === ""
+                  <td className="px-3 py-2 border border-gray-300 font-semibold text-red-600">
+                    ₹ {inputFieldAmount === ""
                       ? unpaid_amount
                       : unpaid_amount - parseInt(inputFieldAmount)}
                   </td>
@@ -138,26 +134,43 @@ const PayUnpaidAmount: React.FC<Props> = ({ data, show, setHide }) => {
         </div>
       </div>
 
-      <div className="text-left flex justify-left mt-6">
-        <div className="flex justify-between items-center">
+      {/* Payment Controls */}
+      <div className="px-8 py-4 bg-white border-t border-gray-200">
+        <p className="text-sm font-bold text-gray-600 uppercase tracking-widest mb-3">Payment Status</p>
+        <div className="flex flex-col sm:flex-row sm:items-center gap-4">
           <SelectStatuRadio setStatus={togglePaymentStatus} status={status} />
           {status === "Unpaid" && (
-            <TextField
-              label="Amount In INR"
-              id="outlined-size-small"
-              size="small"
-              onChange={handleAmountValueChange}
-              type="number"
-              value={inputFieldAmount}
-              className="focus:outline-none outline-none w-96 border-none"
-              style={{ outline: "none", border: "none" }}
-            />
+            <div className="flex flex-col gap-1">
+              <label className="text-xs font-bold text-gray-500 uppercase tracking-widest">
+                Enter Amount Paid (INR)
+              </label>
+              <input
+                type="number"
+                value={inputFieldAmount}
+                onChange={handleAmountValueChange}
+                placeholder="Enter amount"
+                className="border border-gray-300 rounded-lg px-4 py-2 text-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 w-56"
+              />
+              <p className="text-xs text-gray-400">Max payable: ₹{unpaid_amount}</p>
+            </div>
           )}
         </div>
       </div>
-      <div className="m-6 flex justify-end space-x-10">
-        <ButtonHeader buttonClick={updateCustomerPayment} title="Print" />
-        <ButtonHeader buttonClick={hideModule} title="Close" />
+
+      {/* Action Buttons */}
+      <div className="px-8 py-4 bg-gray-50 border-t border-gray-200 flex justify-end gap-4">
+        <button
+          onClick={updateCustomerPayment}
+          className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded-lg shadow transition-all"
+        >
+          Save & Print
+        </button>
+        <button
+          onClick={hideModule}
+          className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-6 rounded-lg shadow transition-all"
+        >
+          Close
+        </button>
       </div>
     </Overlay>
   );
