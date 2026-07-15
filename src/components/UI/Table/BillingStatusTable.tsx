@@ -25,7 +25,7 @@ const BillingStatusTable: React.FC<{ data: Billing[]; status: string }> = ({
 
   const showNothing = !isLoading && data.length === 0;
   return (
-    <div className="w-full overflow-hidden shadow-md rounded-md">
+    <div className="w-full overflow-x-auto shadow-md rounded-md">
       {showNothing ? (
         <Nothing
           heading="No Record"
@@ -43,7 +43,6 @@ const BillingStatusTable: React.FC<{ data: Billing[]; status: string }> = ({
                   {col}
                 </th>
               ))}
-              <th className="px-4 py-2"></th> {/* Empty header for actions */}
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-theme-c3">
