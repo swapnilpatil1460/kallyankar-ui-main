@@ -57,7 +57,7 @@ const ScrapPage: React.FC = () => {
   const totalScrapValue = scrapList.reduce((acc, curr) => acc + (curr.exchange_value || 0), 0);
 
   return (
-    <Layout>
+    <>
       <div className="p-4 bg-white rounded shadow min-h-[80vh]">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold text-gray-800">Scrap Inventory</h1>
@@ -141,7 +141,7 @@ const ScrapPage: React.FC = () => {
           </div>
         )}
       </div>
-    </Layout>
+    </>
   );
 };
 
