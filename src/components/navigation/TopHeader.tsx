@@ -1,4 +1,5 @@
-import { LogOutIcon, Menu, User } from "lucide-react";
+import { LogOutIcon, Menu } from "lucide-react";
+import adminAvatar from "../../assets/images/admin-avatar.jpg";
 import useSessionManagement from "../../hooks/useSessionManagement";
 import { useState, useRef, useEffect } from "react";
 import useAuthContext from "../../auth-store/useAuthContext";
@@ -45,8 +46,8 @@ const TopHeader: React.FC<TopHeaderProps> = ({ onMenuClick }) => {
               <p className="text-sm font-bold text-slate-800">{user?.name || "Admin"}</p>
               <p className="text-xs font-medium text-slate-400">Product Owner</p>
             </div>
-            <div className="h-10 w-10 rounded-full bg-theme-bg flex items-center justify-center text-slate-500 border border-theme-c3 group-hover:border-theme-c1 group-hover:text-theme-c1 transition-all shadow-sm">
-              <User size={20} />
+            <div className="h-10 w-10 rounded-full bg-theme-bg flex items-center justify-center text-slate-500 border border-theme-c3 group-hover:border-theme-c1 group-hover:text-theme-c1 transition-all shadow-sm overflow-hidden">
+              <img src={adminAvatar} alt="Admin Profile" className="h-full w-full object-cover" />
             </div>
           </button>
           
