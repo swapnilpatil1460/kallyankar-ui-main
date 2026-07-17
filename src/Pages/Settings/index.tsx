@@ -8,7 +8,7 @@ import ExcelJS from "exceljs";
 
 import { getBillingList } from "../../backend/billing";
 import { getCustomerListToExport } from "../../backend/customer";
-import { getProductList } from "../../backend/product";
+import { getProductListToExport } from "../../backend/product";
 import { getStockList } from "../../backend/stock";
 import TitleScreen from "../../components/UI/TitleScreen";
 import { useAnimation } from "../../hooks";
@@ -39,7 +39,7 @@ const SettingsPage = () => {
           exportData = await getStockList();
           break;
         case "PRODUCT":
-          exportData = await getProductList();
+          exportData = await getProductListToExport();
           break;
       }
       const fileName =

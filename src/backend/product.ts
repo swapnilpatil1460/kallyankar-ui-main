@@ -21,8 +21,8 @@ const deleteProductById = async (id: string) => {
   return data;
 };
 const getProductList = async () => {
-  const { data } = await api.get<ProductMsg>("product");
-  return data.soldList;
+  const { data } = await api.get<any>("product");
+  return data.soldList || data;
 };
 const getProductListToExport = async () => {
   const { data } = await api.get<any>("product/list-to-export");
