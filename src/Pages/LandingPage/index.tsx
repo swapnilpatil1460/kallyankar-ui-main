@@ -2,7 +2,7 @@ import { Award, BatteryCharging, CarFront, ShieldCheck, Wrench } from "lucide-re
 import Contact from "./contact";
 import Footer from "./footer";
 import LandingPageHeader from "./HeroSection";
-import { KB_1, KB_2, KB_3 } from "../../assets/images";
+import { KB_1, KB_2, KB_3, KalyankarShop, LandingPageBattery } from "../../assets/images";
 import ImageSlider from "../../components/UI/ImageSlider";
 
 const services = [
@@ -40,7 +40,7 @@ const LandingPage = () => (
         <div className="mx-auto max-w-7xl">
           <div className="flex flex-col justify-between gap-5 md:flex-row md:items-end"><div><p className="text-sm font-bold uppercase tracking-[0.2em] text-theme-c1">Our workplace</p><h2 className="mt-3 text-4xl font-bold tracking-tight sm:text-5xl">A familiar place for dependable power.</h2></div><p className="max-w-md leading-7 text-gray-400">Visit us for practical answers and battery support from people who understand the road you travel.</p></div>
           <div className="mt-12 w-full max-w-5xl mx-auto">
-            <ImageSlider images={[KB_1, KB_2, KB_3]} interval={3000} />
+            <ImageSlider images={[KB_1, KB_2, KB_3, KalyankarShop, LandingPageBattery]} interval={3000} />
           </div>
         </div>
       </section>
