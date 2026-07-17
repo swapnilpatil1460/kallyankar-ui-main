@@ -96,8 +96,9 @@ const CustomerPage = () => {
   return (
     <div className="w-full bg-gray-50">
       <TitleScreen
+        pageTitle="Customer Data"
+        subTitle="Manage customer details and billing profiles"
         onAddRecord={() => addRecordFormHandler()}
-        pageTitle="Customer details "
       />
       <div className="px-6 animate-fadeIn">
         <div className="flex flex-col md:flex-row justify-end space-y-4 md:space-y-0 md:space-x-4 mt-6 animate-fadeInUp">
@@ -119,13 +120,7 @@ const CustomerPage = () => {
       </div>
 
       <div className="p-6 bg-white  rounded-lg mt-6 animate-fadeIn">
-        <TitleScreen
-        pageTitle="Customer Data"
-        subTitle="Manage customer details and billing profiles"
-        onAddRecord={() => {
-          addRecordFormHandler();
-        }}
-      />
+
         <CustomerTable data={paginatedCustomers} />
         {totalPages > 1 && (
           <Pagination
