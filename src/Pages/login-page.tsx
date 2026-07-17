@@ -1,9 +1,21 @@
 import LoginForm from "../components/Forms/LoginForm";
 import { KalyankarLogo } from "../assets/images";
+import { Link } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 
 const LoginPage = () => {
   return (
-    <section className="min-h-screen w-full flex items-center justify-center p-4" style={{ background: '#0a0a0a' }}>
+    <section className="min-h-screen w-full flex items-center justify-center p-4 relative" style={{ background: '#0a0a0a' }}>
+      
+      {/* Back to Home Link */}
+      <Link 
+        to="/" 
+        className="absolute top-6 left-6 flex items-center text-gray-400 hover:text-white transition-colors z-10"
+      >
+        <ArrowLeft className="w-5 h-5 mr-2" />
+        Back to Home
+      </Link>
+
       <div className="w-full max-w-md">
         
         {/* Brand Header */}
