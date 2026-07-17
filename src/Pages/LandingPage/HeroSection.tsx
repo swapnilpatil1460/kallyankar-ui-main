@@ -4,7 +4,7 @@ import { KalyankarLogo, KalyankarShop } from "../../assets/images";
 
 const HeroSection = () => {
   return (
-    <section className="relative isolate min-h-[100svh] flex flex-col bg-theme-bg text-white overflow-hidden">
+    <section className="relative isolate min-h-[100svh] flex flex-col bg-theme-bg text-gray-200 overflow-hidden">
       {/* Cinematic Background */}
       <img
         src={KalyankarShop}
@@ -23,12 +23,12 @@ const HeroSection = () => {
           <span className="text-sm font-bold tracking-[0.2em] uppercase sm:text-base hidden sm:block">KALYANKAR <span className="text-theme-c1">BATTERIES</span></span>
         </a>
         <div className="hidden items-center gap-8 text-xs font-bold tracking-widest uppercase text-gray-400 md:flex">
-          <a className="transition hover:text-white" href="#services">Services</a>
-          <a className="transition hover:text-white" href="#workplace">Workplace</a>
-          <a className="transition hover:text-white" href="#contact">Contact</a>
-          <Link to="/admin-login" className="rounded-full border border-theme-c3 bg-theme-c2/50 backdrop-blur-md px-6 py-2.5 transition hover:border-theme-c1 hover:text-white shadow-lg">Admin Login</Link>
+          <a className="transition hover:text-gray-200" href="#services">Services</a>
+          <a className="transition hover:text-gray-200" href="#workplace">Workplace</a>
+          <a className="transition hover:text-gray-200" href="#contact">Contact</a>
+          <Link to="/admin-login" className="rounded-full border border-theme-c3 bg-theme-c2/50 backdrop-blur-md px-6 py-2.5 transition hover:border-theme-c1 hover:text-gray-200 shadow-lg">Admin Login</Link>
         </div>
-        <a href="#contact" className="rounded-full bg-theme-c1 p-3 text-white md:hidden shadow-lg" aria-label="Contact us"><Menu size={20} /></a>
+        <a href="#contact" className="rounded-full bg-theme-c1 p-3 text-gray-200 md:hidden shadow-lg" aria-label="Contact us"><Menu size={20} /></a>
       </nav>
 
       {/* Centered Hero Content */}
@@ -57,7 +57,7 @@ const HeroSection = () => {
 
         {/* CTA Buttons */}
         <div className="mt-12 flex flex-col gap-4 sm:flex-row w-full max-w-md mx-auto sm:max-w-none justify-center">
-          <a href="#contact" className="inline-flex items-center justify-center gap-3 rounded-full bg-theme-c1 px-8 py-4 text-sm font-bold uppercase tracking-widest text-white shadow-[0_0_20px_rgba(204,0,0,0.3)] transition hover:bg-theme-c1-b hover:shadow-[0_0_30px_rgba(204,0,0,0.5)]">
+          <a href="#contact" className="inline-flex items-center justify-center gap-3 rounded-full bg-theme-c1 px-8 py-4 text-sm font-bold uppercase tracking-widest text-gray-200 shadow-[0_0_20px_rgba(204,0,0,0.3)] transition hover:bg-theme-c1-b hover:shadow-[0_0_30px_rgba(204,0,0,0.5)]">
             Find Your Battery <ArrowRight size={18} />
           </a>
           <a href="tel:9359163465" className="inline-flex items-center justify-center gap-3 rounded-full border border-theme-c3 bg-theme-c2/30 backdrop-blur-sm px-8 py-4 text-sm font-bold uppercase tracking-widest transition hover:bg-white hover:text-black">
@@ -69,17 +69,17 @@ const HeroSection = () => {
         <div className="mt-20 grid grid-cols-2 gap-8 border-t border-theme-c3/50 pt-10 sm:grid-cols-3 max-w-3xl w-full mx-auto">
           <div className="flex flex-col items-center">
             <ShieldCheck className="text-theme-c1 mb-3" size={32} />
-            <strong className="block text-2xl font-black text-white">100%</strong>
+            <strong className="block text-2xl font-black text-gray-200">100%</strong>
             <span className="text-xs uppercase tracking-widest text-gray-500 font-bold mt-1">Authentic</span>
           </div>
           <div className="flex flex-col items-center">
             <Zap className="text-theme-c1 mb-3" size={32} />
-            <strong className="block text-2xl font-black text-white">Expert</strong>
+            <strong className="block text-2xl font-black text-gray-200">Expert</strong>
             <span className="text-xs uppercase tracking-widest text-gray-500 font-bold mt-1">Diagnostics</span>
           </div>
           <div className="flex flex-col items-center col-span-2 sm:col-span-1">
             <div className="text-theme-c1 mb-3 flex items-center justify-center font-serif text-3xl font-black italic">A</div>
-            <strong className="block text-2xl font-black text-white">Authorized</strong>
+            <strong className="block text-2xl font-black text-gray-200">Authorized</strong>
             <span className="text-xs uppercase tracking-widest text-gray-500 font-bold mt-1">Amaron Dealer</span>
           </div>
         </div>
