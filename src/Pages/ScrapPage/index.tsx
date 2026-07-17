@@ -8,7 +8,7 @@ const ScrapPage: React.FC = () => {
   const [scrapList, setScrapList] = useState<Scrap[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showAddModal, setShowAddModal] = useState(false);
-  const [newScrap, setNewScrap] = useState({ battery_name: "", amphere_size: "", exchange_value: 0 });
+  const [newScrap, setNewScrap] = useState({ battery_name: "", amphere_size: "", quantity: 1, exchange_value: 0 });
   const { snackbarAnimation } = useAnimation();
 
   const fetchScrap = async () => {
@@ -43,10 +43,10 @@ const ScrapPage: React.FC = () => {
   const handleAddScrap = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await addScrap({ ...newScrap, quantity: 1 });
+      await addScrap(newScrap);
       snackbarAnimation("Scrap item added manually", "success");
       setShowAddModal(false);
-      setNewScrap({ battery_name: "", amphere_size: "", exchange_value: 0 });
+      setNewScrap({ battery_name: "", amphere_size: "", quantity: 1, exchange_value: 0 });
       fetchScrap();
     } catch (err) {
       console.error(err);
@@ -86,6 +86,7 @@ const ScrapPage: React.FC = () => {
                   <th className="py-2 px-4 border-b text-left text-sm font-semibold text-gray-700">Date</th>
                   <th className="py-2 px-4 border-b text-left text-sm font-semibold text-gray-700">Battery Name</th>
                   <th className="py-2 px-4 border-b text-left text-sm font-semibold text-gray-700">Ampere Size</th>
+                  <th className="py-2 px-4 border-b text-center text-sm font-semibold text-gray-700">Quantity (Items)</th>
                   <th className="py-2 px-4 border-b text-left text-sm font-semibold text-gray-700">Exchange Value</th>
                   <th className="py-2 px-4 border-b text-center text-sm font-semibold text-gray-700">Action</th>
                 </tr>
@@ -98,6 +99,7 @@ const ScrapPage: React.FC = () => {
                     </td>
                     <td className="py-2 px-4 border-b text-sm font-medium">{scrap.battery_name}</td>
                     <td className="py-2 px-4 border-b text-sm">{scrap.amphere_size}</td>
+                    <td className="py-2 px-4 border-b text-center text-sm font-bold">{scrap.quantity || 1}</td>
                     <td className="py-2 px-4 border-b text-sm text-green-600 font-bold">₹{scrap.exchange_value}</td>
                     <td className="py-2 px-4 border-b text-center text-sm">
                       <button 
@@ -127,6 +129,10 @@ const ScrapPage: React.FC = () => {
                 <div className="mb-4">
                   <label className="block text-sm font-medium text-gray-700 mb-1">Ampere Size</label>
                   <input type="text" required value={newScrap.amphere_size} onChange={e => setNewScrap({...newScrap, amphere_size: e.target.value})} className="w-full border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none" placeholder="e.g. 150Ah" />
+                </div>
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Quantity (Items)</label>
+                  <input type="number" min="1" required value={newScrap.quantity === 0 ? '' : newScrap.quantity} onChange={e => setNewScrap({...newScrap, quantity: parseInt(e.target.value) || 0})} className="w-full border border-gray-300 rounded p-2 focus:ring-2 focus:ring-blue-500 outline-none" placeholder="1" />
                 </div>
                 <div className="mb-6">
                   <label className="block text-sm font-medium text-gray-700 mb-1">Exchange Value (₹)</label>
