@@ -45,7 +45,7 @@ const getCustomerList = async (p: any) => {
   return data;
 };
 const getCustomerListToExport = async () => {
-  const { data } = await api.get<Customer[]>("customer/export");
+  const { data } = await api.get<Customer[]>("customer");
   return data;
 };
 
