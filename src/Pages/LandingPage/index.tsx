@@ -3,6 +3,7 @@ import Contact from "./contact";
 import Footer from "./footer";
 import LandingPageHeader from "./HeroSection";
 import { KB_1, KB_2, KB_3 } from "../../assets/images";
+import ImageSlider from "../../components/UI/ImageSlider";
 
 const services = [
   { icon: <ShieldCheck />, title: "Quality guarantee", text: "Every battery is thoroughly checked for dependable performance." },
@@ -38,8 +39,8 @@ const LandingPage = () => (
       <section id="workplace" className="overflow-hidden bg-theme-c2 border-y border-theme-c3 px-5 py-20 text-gray-700 sm:px-8 lg:px-10 lg:py-28">
         <div className="mx-auto max-w-7xl">
           <div className="flex flex-col justify-between gap-5 md:flex-row md:items-end"><div><p className="text-sm font-bold uppercase tracking-[0.2em] text-theme-c1">Our workplace</p><h2 className="mt-3 text-4xl font-bold tracking-tight sm:text-5xl">A familiar place for dependable power.</h2></div><p className="max-w-md leading-7 text-gray-400">Visit us for practical answers and battery support from people who understand the road you travel.</p></div>
-          <div className="mt-10 grid gap-5 md:grid-cols-3">
-            {[KB_1, KB_2, KB_3].map((image, index) => <img key={image} src={image} alt={`Kalyankar Batteries workplace ${index + 1}`} className={`h-72 w-full rounded-3xl object-cover border border-theme-c3 ${index === 1 ? "md:-translate-y-6" : ""}`} />)}
+          <div className="mt-12 w-full max-w-5xl mx-auto">
+            <ImageSlider images={[KB_1, KB_2, KB_3]} interval={3000} />
           </div>
         </div>
       </section>
