@@ -8,9 +8,9 @@ const Footer = () => (
         <span className="rounded-2xl bg-white p-2">
           <img src={KalyankarLogo} alt="Kalyankar Batteries" className="h-16 w-16 object-contain" />
         </span>
-        <span className="font-semibold text-gray-200 text-lg">Kalyankar Batteries</span>
+        <span className="font-semibold text-gray-700 text-lg">Kalyankar Batteries</span>
       </div>
-      <div className="flex flex-wrap gap-x-6 gap-y-2"><a href="#services" className="hover:text-gray-200 transition-colors">Services</a><a href="#workplace" className="hover:text-gray-200 transition-colors">Workplace</a><a href="#contact" className="hover:text-gray-200 transition-colors">Contact</a><Link to="/admin-login" className="hover:text-theme-c1 transition-colors">Admin login</Link></div>
+      <div className="flex flex-wrap gap-x-6 gap-y-2"><a href="#services" className="hover:text-gray-700 transition-colors">Services</a><a href="#workplace" className="hover:text-gray-700 transition-colors">Workplace</a><a href="#contact" className="hover:text-gray-700 transition-colors">Contact</a><Link to="/admin-login" className="hover:text-theme-c1 transition-colors">Admin login</Link></div>
       <p>© {new Date().getFullYear()} Kalyankar Batteries.</p>
     </div>
   </footer>
