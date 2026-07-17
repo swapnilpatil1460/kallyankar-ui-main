@@ -1,12 +1,7 @@
 import * as React from "react";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import Box from "@mui/material/Box";
-
 import GSTTable from "../../components/UI/Table/GSTTable";
 import AmphereTable from "../../components/UI/Table/AmphereTable";
 import BatteryNameTable from "../../components/UI/Table/BatteryNameTable";
-
 import { useInitialFetch } from "../../hooks";
 
 interface TabPanelProps {
@@ -24,50 +19,40 @@ const TabPanel = (props: TabPanelProps) => {
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
+      className="w-full animate-fade-in"
       {...other}
     >
-      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+      {value === index && <div className="p-6">{children}</div>}
     </div>
   );
 };
 
-const a11yProps = (index: number) => {
-  return {
-    id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
-  };
-};
 const Battery = () => {
   const [value, setValue] = React.useState(0);
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
-  };
+  const tabs = ["Amphere", "Battery List", "GST"];
+
   return (
     <div className="w-full">
-      <div className="flex flex-col justify-center items-center md:flex-row space-x-10 md:space-x-0">
-        <Box sx={{ width: "100%" }}>
-          <Box
-            sx={{
-              borderBottom: 1,
-              borderColor: "divider",
-              backgroundColor: "rgb(6, 182 ,212)",
-              color: "white",
-            }}
-          >
-            <Tabs
-              value={value}
-              onChange={handleChange}
-              aria-label="basic tabs example"
+      <div className="flex flex-col justify-center items-center w-full">
+        
+        {/* Modern SaaS Tabs */}
+        <div className="flex space-x-2 bg-slate-100 p-1.5 rounded-full mt-8 shadow-inner w-full max-w-md mx-auto mb-2 border border-slate-200">
+          {tabs.map((tab, index) => (
+            <button
+              key={index}
+              onClick={() => setValue(index)}
+              className={`flex-1 py-2.5 px-4 rounded-full text-sm font-bold transition-all duration-300 ease-in-out ${
+                value === index
+                  ? "bg-theme-c1 text-white shadow-md transform scale-100"
+                  : "text-slate-500 hover:text-slate-700 hover:bg-slate-200 transform scale-95"
+              }`}
             >
-              <Tab sx={{ color: "white" }} label="Amphere" {...a11yProps(0)} />
-              <Tab
-                sx={{ color: "white" }}
-                label="Battery List"
-                {...a11yProps(1)}
-              />
-              <Tab sx={{ color: "white" }} label="GST" {...a11yProps(2)} />
-            </Tabs>
-          </Box>
+              {tab}
+            </button>
+          ))}
+        </div>
+
+        <div className="w-full">
           <TabPanel value={value} index={0}>
             <AmphereTable />
           </TabPanel>
@@ -77,7 +62,7 @@ const Battery = () => {
           <TabPanel value={value} index={2}>
             <GSTTable />
           </TabPanel>
-        </Box>
+        </div>
       </div>
     </div>
   );
