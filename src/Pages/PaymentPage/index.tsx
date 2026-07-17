@@ -19,7 +19,8 @@ const BillStatusPage = () => {
     <>
       <TitleScreen
         onAddRecord={() => {}}
-        pageTitle="Customer payment status "
+        pageTitle="Customer payment status"
+        subTitle="Stock analysis and screening tool for Kalyankar Batteries"
         isVisible={false}
       />
       <div className="w-full p-10">

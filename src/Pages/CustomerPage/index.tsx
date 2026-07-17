@@ -119,6 +119,13 @@ const CustomerPage = () => {
       </div>
 
       <div className="p-6 bg-white  rounded-lg mt-6 animate-fadeIn">
+        <TitleScreen
+        pageTitle="Customer Data"
+        subTitle="Manage customer details and billing profiles"
+        onAddRecord={() => {
+          addRecordFormHandler();
+        }}
+      />
         <CustomerTable data={paginatedCustomers} />
         {totalPages > 1 && (
           <Pagination

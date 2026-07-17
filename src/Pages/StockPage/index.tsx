@@ -38,7 +38,8 @@ const Stock = () => {
     <div className="w-full">
       <TitleScreen
         onAddRecord={addRecordFormHandler}
-        pageTitle="Stock analysis and screening tool for Kalyankar Batteries. "
+        pageTitle="Stock Inventory"
+        subTitle="Manage and track battery inventory levels"
       />
       {data && <StockTable data={data} />}
     </div>
